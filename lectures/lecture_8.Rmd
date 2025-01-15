@@ -1,0 +1,21 @@
+---
+title: "BAA1030 - Data Analytics and Story Telling"
+subtitle: "Lecture 8: Introduction to R"
+author: "Damien Dupré - Dublin City University"
+output:
+  xaringan::moon_reader:
+    css: ["default", "metropolis", "metropolis-fonts", "css/custom_design.css"]
+    lib_dir: libs
+    nature:
+      beforeInit: "libs/cols_macro.js"
+      highlightStyle: zenburn
+      highlightLines: true
+      countIncrementalSlides: false
+      
+params:
+  module_code: "BAA1030"
+  lecture_number: "8"
+---
+
+```{r child = '/Users/damienhome/Library/CloudStorage/OneDrive-Personal/Projects/lectures/rstats/introduction.Rmd'}
+```

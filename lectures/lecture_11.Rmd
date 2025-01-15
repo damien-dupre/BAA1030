@@ -1,0 +1,17 @@
+---
+title: "BAA1030 - Data Analytics and Story Telling"
+subtitle: "Lecture 11: Introduction to Quarto"
+author: "Damien Dupré - Dublin City University"
+output:
+  xaringan::moon_reader:
+    css: ["default", "metropolis", "metropolis-fonts", "css/custom_design.css"]
+    lib_dir: libs
+    nature:
+      beforeInit: "libs/cols_macro.js"
+      highlightStyle: zenburn
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r child = '/Users/damienhome/Library/CloudStorage/OneDrive-Personal/Projects/lectures/rstats/quarto.Rmd'}
+```
