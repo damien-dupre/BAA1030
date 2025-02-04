@@ -17,5 +17,5 @@ params:
   assignment_1_deadline: "23/03/2024"
 ---
 
-```{r child = '/Users/damienhome/Library/CloudStorage/OneDrive-Personal/Projects/lectures/tableau/advanced_features.Rmd'}
+```{r child = '/Users/damienhome/Drive/Projects/lectures/tableau/advanced_features.Rmd'}
 ```

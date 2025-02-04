@@ -13,5 +13,5 @@ output:
       countIncrementalSlides: false
 ---
 
-```{r child = '/Users/damienhome/Library/CloudStorage/OneDrive-Personal/Projects/lectures/rstats/quarto.Rmd'}
+```{r child = '/Users/damienhome/Drive/Projects/lectures/rstats/quarto.Rmd'}
 ```

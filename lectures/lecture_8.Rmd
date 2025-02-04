@@ -17,5 +17,5 @@ params:
   lecture_number: "8"
 ---
 
-```{r child = '/Users/damienhome/Library/CloudStorage/OneDrive-Personal/Projects/lectures/rstats/introduction.Rmd'}
+```{r child = '/Users/damienhome/Drive/Projects/lectures/rstats/introduction.Rmd'}
 ```

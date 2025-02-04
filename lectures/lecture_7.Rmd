@@ -16,5 +16,5 @@ output:
 # https://nrennie.rbind.io/talks/lms-research-talks/slides.html#/title-slide
 ---
 
-```{r child = '/Users/damienhome/Library/CloudStorage/OneDrive-Personal/Projects/lectures/tableau/dashboard_design.Rmd'}
+```{r child = '/Users/damienhome/Drive/Projects/lectures/tableau/dashboard_design.Rmd'}
 ```

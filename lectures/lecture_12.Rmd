@@ -17,5 +17,5 @@ params:
   assignment_2_deadline: "April 13th, 1pm"
 ---
 
-```{r child = '/Users/damienhome/Library/CloudStorage/OneDrive-Personal/Projects/lectures/rstats/github.Rmd'}
+```{r child = '/Users/damienhome/Drive/Projects/lectures/rstats/github.Rmd'}
 ```

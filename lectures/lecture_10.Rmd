@@ -18,5 +18,5 @@ params:
   lecture_number: "10"
 ---
 
-```{r child = '/Users/damienhome/Library/CloudStorage/OneDrive-Personal/Projects/lectures/rstats/ggplot.Rmd'}
+```{r child = '/Users/damienhome/Drive/Projects/lectures/rstats/ggplot.Rmd'}
 ```
