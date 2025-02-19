@@ -13,8 +13,8 @@ output:
       countIncrementalSlides: false
       
 params:
-  module_code: "MT5000"
-  assignment_1_deadline: "23/03/2024"
+  module_code: "BAA1030"
+  assignment_1_deadline: "23/03/2025"
 ---
 
 ```{r child = '/Users/damienhome/Drive/Projects/lectures/tableau/advanced_features.Rmd'}
