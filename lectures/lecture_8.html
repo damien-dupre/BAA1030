@@ -4,7 +4,7 @@
     <title>BAA1030 - Data Analytics and Story Telling</title>
     <meta charset="utf-8" />
     <meta name="author" content="Damien Dupré - Dublin City University" />
-    <script src="libs/header-attrs-2.28/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
@@ -22,7 +22,7 @@ class: center, middle, inverse, title-slide
 # BAA1030 - Data Analytics and Story Telling
 ]
 .subtitle[
-## Lecture 8: Introduction to R
+## Lecture 8: Introduction to Python
 ]
 .author[
 ### Damien Dupré - Dublin City University
@@ -48,52 +48,75 @@ class: center, middle, inverse, title-slide
 
 
 
-
-
-
-
 # Brief Introduction
 
-Modern data science uses free and open-source computer languages:
+Modern data analytics uses free and open-source computer languages:
 
 * Proprietary languages (e.g., Matlab) and software (e.g., SPSS, Stata, SAS) are outdated
-* Main open-source computer languages for data science are Python and R
+* Python and R are the main open-source languages for data analytics
 
-While Python is the most used language by computer engineers for web and app development, R has some advantages:
+While R is mostly used in academic research and public institutions, Python is, by far, the most used language in organisations.
 
-1. **Easy to write**, to read and to use
-2. Focused on **reports and journal papers** with reproducibility
-3. Advanced **statistical packages**
-4. **Friendly and open** community
-
-### So let's useR!
+#### So let's use Python!
 
 ---
-
 class: inverse, mline, center, middle
 
-# 1. R and RStudio
+# 1. Python and its IDE
 
 ---
 
-# What are R and RStudio?
+# What are Python and Python IDEs?
 
 There are some key concepts you need to understand and to remember:
 
-* R is the name of the language
-* RStudio is the name of the upgraded interface to write R code
+* Python is the name of the language
+* Python can be coded in various types of interface also called Integrated Development Environment or IDE
 
-R is usually used via RStudio and First time users often confuse the two. At its simplest, **R is like a car’s engine** while **RStudio is like a car’s dashboard**.
+At its simplest, **Python is like a car’s engine** while **an IDE is like a car’s dashboard**.
 
 .pull-left[
-.center[R: The engine]
-&lt;img src="https://raw.githubusercontent.com/damien-dupre/img/main/car_motor.jpeg" width="100%" style="display: block; margin: auto;" /&gt;
+.center[Python: The engine]
+&lt;img src="https://raw.githubusercontent.com/damien-dupre/img/main/car_motor.jpeg" style="display: block; margin: auto;" /&gt;
 ]
 
 .pull-right[
-.center[RStudio: The dashboard]
-&lt;img src="https://raw.githubusercontent.com/damien-dupre/img/main/car_dashboard.jpeg" width="100%" style="display: block; margin: auto;" /&gt;
+.center[IDE: The dashboard]
+&lt;img src="https://raw.githubusercontent.com/damien-dupre/img/main/car_dashboard.jpeg" style="display: block; margin: auto;" /&gt;
 ]
+
+---
+
+# What are Python and Python IDEs?
+
+In its default installation Python and your Python IDE have to be installed separately.
+
+Therefore, you should first download and install Python: [https://www.python.org/](https://www.python.org/)
+
+Then, download and install your Python IDE. Popular Python IDEs include:
+
+- [PyCharm: feature-rich with intelligent code suggestions](https://www.jetbrains.com/pycharm/)
+- [VS Code: lightweight and highly customisable](https://code.visualstudio.com/)
+- [Spyder: designed for scientific computing](https://docs.spyder-ide.org/)
+
+Additionally, a software called [Anaconda](https://www.anaconda.com/download) proposes to install both for free:
+
+- It includes Conda, a package manager that simplifies installing, updating, and managing libraries, avoiding dependency conflicts often encountered with pip. 
+- It comes pre-installed with over 1,500 python libraries, such as NumPy, Pandas, Matplotlib, and TensorFlow, saving time and effort in setting up an environment.
+
+---
+
+# What are Python and Python IDEs?
+
+While VS Code is the most used IDE, it is worth to mention the existance of [Jupyter Notebook](https://jupyter.org/).
+
+It offers a simple but interactive interface that allows you to write Python code, test it, and see the result below the instruction rather than in a separate console.
+
+It allows to combine text in Markdown format (a lighter markup text format than HTML), Python code, and HTML code for visualizations and animations in a single document.
+
+&lt;img src="https://python.sdv.u-paris.fr/img/jupyter-exemple.png" style="display: block; margin: auto;" /&gt;
+
+However, we are not going to use any of these solutions...
 
 ---
 class: clear
@@ -106,242 +129,257 @@ class: clear
 
 ---
 
-# Posit Cloud
+# Google Colab
 
-In your webrowser (Chrome, Firefox, ...), go to: https://posit.cloud/
-  - Sign up
-  - In your workspace, Click "new project"
+Instead, we are going to use Google Colab!
 
-&lt;img src="https://miro.medium.com/max/1400/1*JBHNRwGr3ZiyBzYWpvH6zg.png" width="100%" style="display: block; margin: auto;" /&gt;
+This solution has several advantages, particularly for users who want a hassle-free, cloud-based solution without worrying about local installation or hardware limitations.
 
+It is entirely cloud-based, meaning there is no need to install or configure anything on your local machine.
 
----
+Try it here: [https://colab.research.google.com/](https://colab.research.google.com/)
 
-# Posit Cloud
-
-Warning: Time resources in the free plan are limited to 25h of use per month.
-
-If you go beyond, consider installing R and RStudio on your laptop (free option)
-
-&lt;img src="https://raw.githubusercontent.com/damien-dupre/img/main/posit_cloud_plan.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="https://algotrading101.com/learn/wp-content/uploads/2021/05/Google-Colab-Guide-e1620759490851.jpg" width="50%" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# Code in Rstudio
+# Code in Google Colab
 
-Most of the R code displayed in this lecture is included in these slides. Rather than typing it manually, open these slides in another tab to copy-paste the code
+Most of the python code displayed in this lecture is included in these slides. Rather than typing it manually, open these slides in another tab to copy-paste the code
 
 Two ways to access these slides:
 
-  - From Loop: Lectures &gt; Lecture 8
-  - Or from the URL: https://damien-dupre.github.io/BAA1030/lectures/lecture_8
+  - From Loop: Lectures &gt; Lecture 6
+  - Or from the URL: https://damien-dupre.github.io/BAA1030/lectures/lecture_6
 
 &lt;img src="https://c.tenor.com/0heitU7-tg4AAAAC/copy-paste-paste.gif" width="50%" style="display: block; margin: auto;" /&gt;
 
 ---
 class: inverse, mline, center, middle
 
-# 2. Coding in RStudio
+# 2. Coding in Google Colab
 
 ---
 
-# RStudio IDE
+# Google Colab
 
-When you create a new project, you will lauch Rstudio see the following 3 windows (also called panes):
+When you create a new project, you will launch Rstudio see the following 3 windows (also called panes):
 
 * **Console**: where the results are printed
-* **Workspace**: where the objects are stored
-* **Files, Plots, Package, Help and Viewer**: where data science materials are
+* **Variable Environment**: where the objects are stored
+* **Notebook**: where the code should be typed and saved
 
-&lt;img src="https://raw.githubusercontent.com/damien-dupre/img/main/rstudio_panes.png" width="60%" style="display: block; margin: auto;" /&gt;
-
-The last window **Code Editor** opens when creating a new R Script
+&lt;img src="https://hutchdatascience.org/Intro_to_Python/images/colab.png" width="60%" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# Console: R’s Heart
+# Python Console
 
-The console displays 1. **What has been ran**, 2. The **results** (or some parts) of has been ran, and 3. The **status of the R process**.
+Open it via View -&gt; Executed code history. 
 
-.pull-left[
-The Status of R is indicated by the symbol in the console prompt:
-
-* `&gt;` means ready to process code 
-* `+` means incomplete command (escape with &lt;kbd&gt;Esc&lt;/kbd&gt;)
-* &amp;#128721; at the top right corner means the console is busy processing your code
-]
-
-.pull-right[
-&lt;img src="https://raw.githubusercontent.com/damien-dupre/img/main/r_console.png" width="100%" style="display: block; margin: auto;" /&gt;
-]
-
-You can execute code by typing it directly into the Console. However, it will not be saved. And if you make a mistake you will have to re-type everything all over again. 
-
-Instead, it is better to **write all your code in a document (R script or Quarto file) in the Code Editor**.
+You give it one line of Python code, and the console executes that single line of code; you give it a single piece of instruction, and it executes it for you.
 
 ---
 
-# Environment: R’s Brain
+# Notebook
 
-The Environment tab of this pane shows you the **names of all the data objects** (like vectors, matrices, and data frames) that you have defined in your current R session. 
+In the central panel of the website, you will see Python code interspersed with word document text. 
 
-You can also see **information** like the number of observations and rows in data objects. 
-
-&lt;img src="https://www.statology.org/wp-content/uploads/2021/10/envir1.png" width="100%" style="display: block; margin: auto;" /&gt;
+This is called a Python Notebook (other similar services include Jupyter Notebook, iPython Notebook), which has chunks of plain text and Python code, and it helps us understand better the code we are writing.
 
 ---
 
-# Files / Plots / Packages / Help
+# Variable Environment
 
-* The **Files** panel gives you access to the file directory on your hard drive.
+Open it by clicking on the “{x}” button on the left-hand panel. 
 
-* The **Plots** panel shows all your plots. There are buttons for opening the plot in a separate window and exporting the plot as a pdf or jpeg.
+Often, your code will store information in the Variable Environment, so that information can be reused. 
+For instance, we often load in data and store it in the Variable Environment, and use it throughout rest of your Python code.
 
-* The **Packages** shows a list of all the R packages installed on the local or remote machine and indicates whether or not they are currently loaded.
+Note that I will mention the "Terminal" in the lecture. In Google Colab, the terminal can only be accessed if you pay for Google Colab Pro. 
 
-* With the **Help** menu for R functions you can access to essential information to use them. Just have a look at some of them by typling &lt;kbd&gt;F1&lt;/kbd&gt; with the cursor on the function, using the `help()` function, or by typing `?` followed by the function name such as:
+However, this is something that we won't do and we will find free alternative to use the "Terminal" in Google Colab.
+
+---
+class: title-slide, middle
+
+## Exercise
+
+The first thing we will do is see the different ways we can run Python code. 
 
 
-``` r
-help(seq)
-?seq
-help(lm)
-?lm
-```
+In the Python Notebook, create chunk of Python Code with 2+2, and click the arrow button.
+
+<div class="countdown" id="timer_6fd29ed8" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
 
 ---
 
-# Code Editor: R's Nervous System
+# Running Python Code
 
-- It makes the link between all the previous pane and allows to reproduce actions and behaviours.
+In addition to the code cell, you can use the Python Console too.
 
-- You can open as many R Script / Quarto file as you want.
+Type something into the Python Console (Execution) and click the arrow button, such as 2+2. The Python Console will run it and give you an output.
 
-- These documents are the only documents that have to be saved. No need to save you data, figures and calculations as you can reproduce them every time instantaneously with the code.
+A very useful trick is to run every single Python code chunk via Runtime -&gt; Run all.
 
-- Save your eyes and look like a nerd by changing the code's appearance
+Remember that the order that you run your code matters in programming. Your final product would be the result of Option 3, in which you run every Python code chunk from start to finish. However, sometimes it is nice to try out smaller parts of your code via Options 1 or 2. But you will be at risk of running your code out of order!
 
-&lt;img src="https://miro.medium.com/max/1600/1*eLjON45R_kHIfg_IgL8FIg.jpeg" width="60%" style="display: block; margin: auto;" /&gt;
-.center.tiny[Credit: towardsdatascience.com [🔗](https://towardsdatascience.com/customize-your-rstudio-theme-914cca8b04b1)]
+---
+
+# New Code Chunks
+
+To create your own content in the notebook, click on a section you want to insert content, and then click on “+ Code” or “+ Text” to add Python code or text, respectively.
+
+Python Notebook is great for data science work, because:
+
+- It encourages reproducible data analysis, when you run your analysis from start to finish.
+- It encourages excellent documentation, as you can have code, output from code, and prose combined together.
+
+The version of Python used in this course and in Google Colab is Python 3, which is the version of Python that is most supported.
+
+Now, we will get to the basics of programming grammar.
 
 ---
 class: inverse, mline, center, middle
 
-# 3. The Basics of R Code
+# 3. The Basics of python Code
 
 ---
 
-# What are .R and .qmd files?
+# What are .py and .ipynb files?
 
-**.R** is the extension for a R script (document including only R code): 
-- Click **File &gt; New File &gt; R Script** in RStudio
-- Includes only code which can be active or inactive (line starts with `#`)
-- Used for code testing
+**.py** is the extension for a python script (document including only python code)
 
-Example of non-active code
+**.ipynb** is the extension for a i-python notebook documents which are used by Jupyter or Google Colab. 
 
+These notebooks mixes code cells (or code chunks) and markdown cells (basically text)
 
-``` r
-# non active code
-```
+## How to Run Python Code?
 
-Example of active code
-
-
-``` r
-paste("active", "code")
-```
-
-```
-## [1] "active code"
-```
-
-``` r
-1 + 1 # everything after `#` is non active and is used for comments
-```
-
-```
-## [1] 2
-```
-
----
-
-# What are .R and .qmd files?
-
-**.qmd** is the extension for a Quarto file: 
-- Click **File &gt; New File &gt; Quarto document...** in RStudio
-- Refers to a document that includes code and text
-- Generates a specific type of output
-  - .html (web page, slides, books, and dashboards)
-  - .pdf (Academic LaTex papers and reports)
-  - .doc (MS Word documents)
-  
-&lt;img src="https://r4ds.hadley.nz/quarto/diamond-sizes-report.png" width="80%" style="display: block; margin: auto;" /&gt;
-
----
-
-# How to Run R Code?
-
-.pull-left[
-In a R Script, place your cursor anywhere on the line you want to run and either:
+In a Python notebook, click on the play arrow next to the code cell or:
 - Press &lt;kbd&gt;Ctrl&lt;/kbd&gt; &amp; &lt;kbd&gt;Enter&lt;/kbd&gt; (Win)
 - Press &lt;kbd&gt;command&lt;/kbd&gt; &amp; &lt;kbd&gt;Enter&lt;/kbd&gt; (Mac)
-- Click the `Run` button on RStudio's interface
 
-In a Quarto file:
-- Use the **green** arrow to run the current chunk of code
-- Use the `Knit` button on RStudio's interface to create the output file
-]
-
-.pull-right[
-&lt;img src="https://raw.githubusercontent.com/damien-dupre/img/main/rstudio_run.gif" width="100%" style="display: block; margin: auto;" /&gt;
-]
+&lt;img src="https://amitness.com/posts/images/colab-cell-hover.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# What are R packages?
+# How to Run Python Code?
 
-R packages extend the functionality of R. They are written by a worldwide community of R users and can be downloaded for free from the internet.
+Inside a code cell, every character will be read as python code excepts if after a `#` which is used for comments.
 
-A good analogy for **R packages are like apps you can download onto a mobile phone**.
+Example of non-active code:
+
+
+``` python
+# non active code for comments
+```
+
+Example of active code:
+
+
+``` python
+print("active", "code")
+```
+
+```
+## active code
+```
+
+``` python
+1 + 1 ## everything after `#` is non active and is used for comments
+```
+
+```
+## 2
+```
+
+---
+
+# What are python packages/libaries?
+
+Python packages extend the functionality of python. They are written by a worldwide community of python users and can be downloaded for free from the internet.
+
+A good analogy for **python packages are like apps you can download onto a mobile phone**.
 
 .pull-left[
-.center[R: A new phone]
+.center[Python: A new phone]
 &lt;img src="https://raw.githubusercontent.com/damien-dupre/img/main/phone_design.jpeg" width="100%" style="display: block; margin: auto;" /&gt;
 ]
 
 .pull-right[
-.center[R Packages: Apps you can download]
+.center[Packages/Libaries: Apps you can download]
 &lt;img src="https://raw.githubusercontent.com/damien-dupre/img/main/phone_apps.jpeg" width="100%" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
 
-# What are R packages?
+# What are python packages/libaries?
 
-Say you have purchased a new phone, to use Instagram you need to **install the app once** and to **open the app** every time you want to use it.
+Say you have purchased a new phone, to use Instagram you need to **install the app once** and to **open the app** every time you want to use it. The process is very similar for using an python package. You need to:
 
-The process is very similar for using an R package. You need to:
+#### 1. Install the package/library
+.pull-left[
+From the terminal using:
 
-* **Install the package** with the function `install.packages()`.
+``` bash
+pip install praise
+```
+]
+
+.pull-right[
+Or, in a Google Colab code cell using:
+
+``` python
+!pip install praise
+```
+]
+
+#### 2. “Load” the package with the relevant function using `from` and `import`
 
 
-``` r
-install.packages("praise")
+``` python
+from praise import praise
 ```
 
-* **“Load” the package** with the function `library()`. 
+Note: Here, `praise` is the name of the package/library and `praise` is also the name of a function contained in the package/library.
+
+#### 3. Once the package is loaded, you can use the function `praise` from this package such as:
 
 
-``` r
-library(praise)
-```
-
-Once the package is loaded you can use all the functions from this package such as:
-
-
-``` r
+``` python
 praise()
+```
+
+---
+
+# What are python packages/libaries?
+
+In order to load all the functions contained in a package/library, it can be called using an explicit alias using `import` and `as`:
+
+
+``` python
+import praise as pr
+```
+
+Then functions can be used using the alias as prefix:
+
+
+``` python
+pr.praise()
+```
+
+With the time, alias conventions have been created for popular packages/libraries:
+
+
+``` python
+import numpy as np
+import pandas as pd
+import math as m
+import matplotlib.pyplot as plt
 ```
 
 ---
@@ -354,24 +392,26 @@ class: title-slide, middle
 
 ## Exercise
 
-Open a R Script in RStudio. In this document:
-- Use line 1 to **install the package "praise"**
+Open an New Notebook in Google Colab. 
 
-``` r
-install.packages("praise")
+In this document:
+- Create a 1st code cell to **install the package "praise"**
+
+``` python
+!pip install praise
 ```
-- Use line 2 to **load the library praise**
+- Create a 2nd code cell to **load the library praise** and the function **praise()**
 
-``` r
-library(praise)
+``` python
+from praise import praise
 ```
-- Use line 3 to **run the function `praise()`** as it is, without arguments
+-  Create a 3rd code cell to **run the function `praise()`** as it is, without arguments
 
-``` r
+``` python
 praise()
 ```
 
-<div class="countdown" id="timer_e4f0ee97" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown" id="timer_cd82a787" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -380,74 +420,103 @@ praise()
 
 # Calling Functions
 
-Functions are algorithms (or lines of code) which **transform data to something else**. For example, the function `lm()`, uses data to compute the result of a linear regression model.
+Functions are algorithms (or lines of code) which **transform data to something else**. For example, the function `praise()`, without arguments, prints a random message.
  
-Functions have **a name** and **several arguments** that require some information.
+Functions have **a name** and **several parameters or arguments** that require some information.
 
 
-``` r
-function_name(argument_1 = value_1, argument_2 = value_2, ...)
+``` python
+function_name(argument_1=value_1, argument_2=value_2, ...)
 ```
 
-For example, the function `seq()` makes a sequences of numbers:
+<span>&lt;i class="fas  fa-exclamation-triangle faa-flash animated faa-slow " style=" color:red;"&gt;&lt;/i&gt;</span> However, arguments are usually matched by position without explicitly calling them:
+
+
+``` python
+function_name(value_1, value_2, ...)
+```
+
+---
+
+# Calling Functions
+
+For example, the function `arange()` (read "A-range" for array range) from the package `numpy` makes a sequences of numbers:
 * The first argument `from` is the number starting the sequence
 * The second argument `to` is last number of the sequence
 
 
-``` r
-seq(from = 1, to = 10)
+``` python
+import numpy as np
+np.arange(0, 10)
 ```
 
 ```
-##  [1]  1  2  3  4  5  6  7  8  9 10
-```
-
-<span>&lt;i class="fas  fa-exclamation-triangle faa-flash animated faa-slow " style=" color:red;"&gt;&lt;/i&gt;</span> Arguments doesn't need to be explicitly called, they can also be matched by position:
-
-
-``` r
-seq(1, 10)
-```
-
-```
-##  [1]  1  2  3  4  5  6  7  8  9 10
+## array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 ```
 
 ---
 
-# Assign Values to Objects in R
+# Calling Functions
 
-Usually the arguments of functions expects an Object name to access the data.
+However, the function `arange()` has many more arguments, for example
+
+
+``` python
+np.arange(0, 10, dtype=float)
+```
+
+```
+## array([0., 1., 2., 3., 4., 5., 6., 7., 8., 9.])
+```
+
+Note: These are fundamental types used in lists, tuples, and other structures:
+- Integer (**int**) – Whole numbers (e.g., 1, 2, -5)
+- Floating-Point (**float**) – Decimal numbers (e.g., 3.14, -0.001)
+- String (**str**) – Text data (e.g., "hello", 'Python')
+- Boolean (**bool**) – True or False values (True, False)
+
+---
+
+# Assign Values to Objects
 
 An object is a box that **can include anything** (e.g., values, dataframes, figures, models, functions, ...) and **has a name** that you have to choose. 
 
---
-
-To create an object, you need to **assign something** to a name using the `&lt;-` operator. If you type the name of the object, R will print out its content.
+To create an object, you need to **assign something** to a name using the `=` operator. If you type the name of the object, python will print out its content.
 
 
-``` r
-x &lt;- 4
+``` python
+x = 4
 x
 ```
 
 ```
-## [1] 4
+## 4
 ```
 
-``` r
-seq(x, 10)
+``` python
+np.arange(x, 10)
 ```
 
 ```
-## [1]  4  5  6  7  8  9 10
+## array([4, 5, 6, 7, 8, 9])
+```
+
+Then, you can use this object further in your code:
+
+
+``` python
+np.arange(x, 10)
+```
+
+```
+## array([4, 5, 6, 7, 8, 9])
 ```
 
 ---
 
-# Assign Values to Objects in R
+# Assign Values to Objects
 
-It is very important to distinguish values and objects in R:
+It is very important to distinguish values and objects in python:
 
 &lt;table&gt;
  &lt;thead&gt;
@@ -459,14 +528,19 @@ It is very important to distinguish values and objects in R:
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Number &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Integer (int) &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Numeric Value &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 1, 2, ... &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Word with quotes &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Floating-Point (float)) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Decimal Value &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1.1, 2.8, ... &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; String (str) &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Character Value &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; &amp;quot;one&amp;quot;, &amp;quot;two&amp;quot;, ... &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; "one", "two", ... &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Word without quotes &lt;/td&gt;
@@ -476,39 +550,32 @@ It is very important to distinguish values and objects in R:
 &lt;/tbody&gt;
 &lt;/table&gt;
 
-These types of values are then stored in different objects:
+These, types of values are then stored in different objects:
 
-&lt;img src="http://r.qcbs.ca/workshop01/workshop01-en/images/matrix.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="https://nustat.github.io/DataScience_Intro_python/Datasets/numpy_image.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# Different R Objects
+# Different Objects
 
 All object assignments have the same form:
 
 
-``` r
-object_name &lt;- object_content
+``` python
+object_name = object_content
 ```
 
 You want your object names to be descriptive, so you will need a convention for multiple words. I recommend **snake_case** where you separate lower-case words with `_`.
 
 
-``` r
-numeric_value &lt;- 1
+``` python
+numeric_value = 1
 
-character_value &lt;- "one"
+character_value = "one"
 
-vectors_with_numeric_values &lt;- c(1, 2)
+list_with_numeric_values = [1, 2]
 
-vectors_with_character_values &lt;- c("one", "two")
-
-dataframe_example &lt;- data.frame(col1 = c("one", "two"), col2 = c(1, 2))
-
-dataframe_example &lt;- data.frame(
-  col1 = vectors_with_character_values, 
-  col2 = vectors_with_numeric_values
-  )
+list_with_character_values = ["one", "two"]
 ```
 
 ---
@@ -521,17 +588,29 @@ class: title-slide, middle
 
 ## Exercise
 
-In the same R Script in RStudio, **Copy, Paste, and Run** the following code:
+In the same python code chunk in google colab, **Copy, Paste, and Run** the following code:
 
+
+``` python
+import matplotlib.pyplot as plt
+
+# Data
+my_power = [0.5, 99.5]
+my_knowledge = ["without python", "with python"]
+
+# Create bar plot
+plt.bar(my_knowledge, my_power)
+
+# Add labels
+plt.xlabel("Knowledge Level")
+plt.ylabel("Power (%)")
+plt.title("Bar Plot Example")
+
+# Show plot
+plt.show()
 ```
-my_power &lt;- c(0.5, 99.5)
 
-my_knowledge &lt;- c("without R", "with R")
-
-barplot(height = my_power, names.arg = my_knowledge)
-```
-
-<div class="countdown" id="timer_27cd4a8c" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown" id="timer_8bdcebc2" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -539,69 +618,71 @@ barplot(height = my_power, names.arg = my_knowledge)
 ---
 class: inverse, mline, center, middle
 
-# 4. Access Data in Posit Cloud
+# 4. Access Data in Google Colab
 
 ---
 
-# Open your Data as R Object (1)
+# Open your Data as python Object (1)
 
-Posit Cloud is a free remote computer, the computing is not run on your computer.
+Google Colab is a free remote computer, the computing is not run on your computer.
 
-To open Data on Posit Cloud, you first need to `Upload` your file on this computer and to `Import` the data in R.
+To open Data on Google Colab, you first need to `Upload` your file on this computer and to `read` the data in python.
 
 .pull-left[
 .center[Step 1: Upload your File]
-&lt;img src="https://community-cdn.rstudio.com/uploads/default/original/2X/9/91a128299a9d910f84279be9ecd89b60aa15f20b.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="https://miro.medium.com/v2/resize:fit:1400/1*eLs1D3BI4_HLAabN5WUTPg.png" style="display: block; margin: auto;" /&gt;
 ]
 
 .pull-right[
-.center[Step 2: Import your Data]
-&lt;img src="https://raw.githubusercontent.com/damien-dupre/img/main/rstudio_import.png" width="100%" style="display: block; margin: auto;" /&gt;
+.center[Step 2: Read your File with Pandas]
+&lt;img src="https://miro.medium.com/v2/resize:fit:1400/1*EwbRL6__lKav4sKfjS8Ktw.png" style="display: block; margin: auto;" /&gt;
 ]
 
-Remember that **.csv files are basically text files**
+---
+
+# Open your Data as python Object (2)
+
+Once you have uploaded your data file from your computer to this free cloud computer, you can read it using the function `read_csv` in the `pandas` package/library. 
+
+The only argument expected is the path to the upload file which can be obtained with a left/double click on the file.
+
+The result of the `read_csv` has to be saved in an object and you can print this object by running its name.
+
+
+``` python
+import pandas as pd
+
+df = pd.read_csv("/content/titanic.csv")
+
+df
+```
 
 ---
 
-# Open your Data as R Object (2)
+# Open your Data as python Object (3)
 
-For early beginners on the Desktop version, directly open data with RStudio 's `Import Dataset` button.
-
-&lt;img src="https://support.rstudio.com/hc/article_attachments/360017333414/data-import-rstudio-overview.gif" width="70%" style="display: block; margin: auto;" /&gt;
-
-If you see your data in the preview, you can click `Import` to create an object containing your data. A code will be executed on the console, **Copy and Paste the first line of this code in your R script**. You will not have to do it manually once the code is in your script.
-
----
-
-# Open your Data as R Object (3)
-
-To ensure code reproducibility, open data with the appropriate function (e.g., `read.csv()` for csv files).
-
-The main argument of these functions is `file` which corresponds to the path to a file, followed by the name of the file and it extension:
+If you use python on your own computer, file paths are different according to your Operating System:
 
 
-``` r
+``` python
 # Windows
-my_file_object &lt;- read.csv(file = "C:/path/to/my/file.csv")
-my_file_object &lt;- read.csv("C:/path/to/my/file.csv")
+my_file_object = pd.read_csv("C:/path/to/my/file.csv")
 
 # Macos
-my_file_object &lt;- read.csv(file = "/Users/path/to/my/file.csv")
-my_file_object &lt;- read.csv("/Users/path/to/my/file.csv")
+my_file_object = pd.read_csv("/Users/path/to/my/file.csv")
 ```
 
 The following codes will generate an error:
 
 
-``` r
+``` python
 # Incomplete path
-my_file_object &lt;- read.csv("/path/to/my/file.csv")
+my_file_object = pd.read_csv("/path/to/my/file.csv")
 # Missing file extension
-my_file_object &lt;- read.csv("C:/path/to/my/file")
+my_file_object = pd.read_csv("C:/path/to/my/file")
 # Use of backward slash
-my_file_object &lt;- read.csv("C:\path\to\my\file.csv")
+my_file_object = pd.read_csv("C:\path\to\my\file.csv")
 ```
-
 
 ---
 class: title-slide, middle
@@ -613,11 +694,11 @@ class: title-slide, middle
 
 ## Exercise
 
-1. Click on `Upload` to upload your "unicef_metadata.csv" file on your Posit Cloud
+1. Click on `Upload` to upload your "unicef_metadata.csv" file on your Google Colab
 
-2. Click on `Import` to import these data in R
+2. Use the function `read_csv` in the `pandas` package/library to read the file.
 
-<div class="countdown" id="timer_81a312d3" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown" id="timer_656c6185" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -625,91 +706,68 @@ class: title-slide, middle
 ---
 class: inverse, mline, center, middle
 
-# 5. Save Your Data
+# 5. Save Your Notebook
 
 ---
 
-# Save Your Data
+# Save Your Notebook
 
-Usually, **only R Script file (.R) or Quarto file (.qmd) have to be saved** as they allow the full replicability of transformations and result.
+Your data file will be removed from Google Colab as soon as you close the tab. However, that's ok we can upload it and use it again every time we come back to the Notebook.
 
-However, if you want to use the data that have been transformed, joined or pivoted, a function has to be used according the type of export.
+What is important to save is your Notebook with the code your wrote. 
 
-The simplest export is a .csv file with the function `write.csv()`. It as two main arguments:
-- `x` which is the name of the object to save
-- `file` which is the name of the output file
-
-Note: don't forget the file extension in the argument `file`
-
-Example:
-
-
-``` r
-# Saved in the current directory
-write.csv(x = my_file_object, file = "my_file_name.csv")
-write.csv(my_file_object, "my_file_name.csv")
-
-# Saved in the directory you prefer
-write.csv(my_file_object, "C:/path/to/my/my_file_name.csv") # Windows
-write.csv(my_file_object, "/Users/path/to/my/my_file_name.csv") # Macos
-```
+By clicking on `File` &gt; `Save`, you will save it on your Google Drive. A new folder called "Colab Notebooks" will be created and all your Notebooks saved in this folder.
 
 ---
 class: title-slide, middle
 
 ## Exercise
 
-Save the data contained in the object "unicef_metadata" in a new .csv file (give a different name than "unicef_metadata.csv" else this document will be overwritten)
+Save the Notebook you were working on and find it in your google drive.
 
-<div class="countdown" id="timer_adc7c3d0" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown" id="timer_62e2defb" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
 ---
 
-# Become Expert in R
+# Become Expert in Python
 
-Because R is free, plenty of free learning materials are available online:
+Because Python is free, plenty of free learning materials are available online, on Youtube or Tik Tok
 
-* Video tutorials in Youtube, Tik Tok (@chelseaparlettpelleriti, @tommyteaches, ...)
+Social networks like LinkedIn or X, and content aggregators like Medium or Towards Data Science, offer posts of varying quality. The site [Real Python](https://realpython.com/) generally provides very good posts, comprehensive and educational.
   
-* Interactive tutorials, see for example:
-  - [Posit Primers](https://posit.cloud/learn/primers)
-  - [R-Bootcamp](https://r-bootcamp.netlify.com)
-  - [Introduction to R](https://www.quantargo.com/courses/course-r-introduction)
-  - [DCU R tutorials](https://dcu-r-tutorials.netlify.app)
+Many free online books are also listed in the [Big Book of Python](https://www.bigbookofpython.com/)
 
-* Book tutorials, see for example:
-  - [R for Data Science](https://r4ds.hadley.nz/) by Wickham &amp; Grolemund (2023)
-  - [A ModernDive into R and the tidyverse](https://moderndive.com/) by Ismay &amp; Kim (2022)
-  - [Getting Used to R, RStudio, and Quarto file](https://rbasics.netlify.com/) by Kennedy (2021)
-  - [Introduction to Open Data Science](https://ohi-science.org/data-science-training/) by the Ocean Health Index Team (2019)
-  
-Note: All books are included in the [Big Book of R](https://www.bigbookofr.com/)
+There are well-crafted newsletters for regularly tracking developments in the data science ecosystem. For me, they are the primary source of fresh information.
+- If you had to subscribe to only one newsletter, the most important to follow is Andrew Ng's, &lt;a href="https://www.deeplearning.ai/the-batch/"&gt;&lt;em&gt;"The Batch"&lt;/em&gt;&lt;/a&gt;. 
+- General newsletters from &lt;a href="https://dataelixir.com/"&gt;&lt;em&gt;Data Elixir&lt;/em&gt;&lt;/a&gt; and &lt;a href="https://alphasignal.ai/"&gt;Alpha Signal&lt;/a&gt; keep you updated with the latest news. 
+- In the field of data visualization, newsletters from &lt;a href="https://blog.datawrapper.de/newsletter/"&gt;&lt;em&gt;DataWrapper&lt;/em&gt;&lt;/a&gt; provide accessible content on the subject.
 
 ---
 
-# How to solve your pRoblems
+# How to solve errors
 
 .pull-left[
 ### 1. Look at your error
   * If it's obvious, solve it by yourself
   * If it's not obvious, copy paste the error in google
   
-### 2. Look at your object
-  * `str(ObjectName)`
+### 2. Code assistant AIs 
+  * ChatGPT, Github Copilot, or any other can be very helpful
+  * Provide them with the code and error should be enough to resolve your issue
 
 ### 3. Look at the function
-  * Documentation (`F1` or `?`)
+  * Documentation available online
 
 ### 4. Look at the web
-  * Google "R how to ..."
+  * Google "python how to ..."
   * Stack Overflow
 ]
 
 .pull-right[
-&lt;img src="https://www.memecreator.org/static/images/memes/5283425.jpg" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="https://media.makeameme.org/created/me-when-i-99d07768c9.jpg" width="100%" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -719,7 +777,6 @@ class: inverse, mline, left, middle
 
 # Thanks for your attention and don't hesitate to ask if you have any question!
 
-[<svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg> @damien_dupre](http://twitter.com/damien_dupre)  
 [<svg aria-hidden="true" role="img" viewBox="0 0 496 512" style="height:1em;width:0.97em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg> @damien-dupre](http://github.com/damien-dupre)  
 [<svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M579.8 267.7c56.5-56.5 56.5-148 0-204.5c-50-50-128.8-56.5-186.3-15.4l-1.6 1.1c-14.4 10.3-17.7 30.3-7.4 44.6s30.3 17.7 44.6 7.4l1.6-1.1c32.1-22.9 76-19.3 103.8 8.6c31.5 31.5 31.5 82.5 0 114L422.3 334.8c-31.5 31.5-82.5 31.5-114 0c-27.9-27.9-31.5-71.8-8.6-103.8l1.1-1.6c10.3-14.4 6.9-34.4-7.4-44.6s-34.4-6.9-44.6 7.4l-1.1 1.6C206.5 251.2 213 330 263 380c56.5 56.5 148 56.5 204.5 0L579.8 267.7zM60.2 244.3c-56.5 56.5-56.5 148 0 204.5c50 50 128.8 56.5 186.3 15.4l1.6-1.1c14.4-10.3 17.7-30.3 7.4-44.6s-30.3-17.7-44.6-7.4l-1.6 1.1c-32.1 22.9-76 19.3-103.8-8.6C74 372 74 321 105.5 289.5L217.7 177.2c31.5-31.5 82.5-31.5 114 0c27.9 27.9 31.5 71.8 8.6 103.9l-1.1 1.6c-10.3 14.4-6.9 34.4 7.4 44.6s34.4 6.9 44.6-7.4l1.1-1.6C433.5 260.8 427 182 377 132c-56.5-56.5-148-56.5-204.5 0L60.2 244.3z"/></svg> https://damien-dupre.github.io](https://damien-dupre.github.io) 
 [<svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M16.1 260.2c-22.6 12.9-20.5 47.3 3.6 57.3L160 376V479.3c0 18.1 14.6 32.7 32.7 32.7c9.7 0 18.9-4.3 25.1-11.8l62-74.3 123.9 51.6c18.9 7.9 40.8-4.5 43.9-24.7l64-416c1.9-12.1-3.4-24.3-13.5-31.2s-23.3-7.5-34-1.4l-448 256zm52.1 25.5L409.7 90.6 190.1 336l1.2 1L68.2 285.7zM403.3 425.4L236.7 355.9 450.8 116.6 403.3 425.4z"/></svg> damien.dupre@dcu.ie](mailto:damien.dupre@dcu.ie)

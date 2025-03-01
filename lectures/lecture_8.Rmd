@@ -1,6 +1,6 @@
 ---
 title: "BAA1030 - Data Analytics and Story Telling"
-subtitle: "Lecture 8: Introduction to R"
+subtitle: "Lecture 8: Introduction to Python"
 author: "Damien Dupré - Dublin City University"
 output:
   xaringan::moon_reader:
@@ -17,5 +17,5 @@ params:
   lecture_number: "8"
 ---
 
-```{r child = '/Users/damienhome/Drive/Projects/lectures/rstats/introduction.Rmd'}
+```{r child = '/Users/damienhome/Drive/Projects/lectures/python/introduction.Rmd'}
 ```
