@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>BAA1030 - Data Analytics and Story Telling</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Damien Dupré - Dublin City University" />
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/countdown-0.4.0/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown-0.4.0/countdown.js"></script>
+    <link href="libs/font-awesome-animation-1.0/font-awesome-animation-emi.css" rel="stylesheet" />
+    <script src="libs/fontawesome-5.0.13/js/fontawesome-all.min.js"></script>
+    <link rel="stylesheet" href="css/custom_design.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# BAA1030 - Data Analytics and Story Telling
+]
+.subtitle[
+## Lecture 8: Data Wrangling with Polars
+]
+.author[
+### Damien Dupré - Dublin City University
+]
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Python so far
+
+We have already seen how to:
+
+- **Use python** in Google Colab
+- **Install, load and use packages**
+- Run **code cells**
+- Use **keyboard shortcuts**: &lt;kbd&gt;Ctrl&lt;/kbd&gt; &amp; &lt;kbd&gt;Enter&lt;/kbd&gt; (Win) / &lt;kbd&gt;Command&lt;/kbd&gt; &amp; &lt;kbd&gt;Enter&lt;/kbd&gt; (Mac)
+- **Create object** with the `=` sign
+- **Upload and read data** in Google Colab
+
+Now let's introduce Polars!
+
+&lt;img src="https://pola.rs/share.jpg" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Data Wrangling and Manipulation
+
+`pandas` is a powerful and widely used Python library for data manipulation and analysis. 
+
+It provides the DataFrame structure (two-dimensional) that allow to efficiently store, manipulate, and analyse structured data.
+
+It allows Data Manipulation like:
+
+- Adding, deleting, and modifying columns and rows.
+- Merging, joining, and concatenating datasets.
+- Reshaping data with pivot tables and groupby operations.
+- Performing statistical and mathematical operations (mean, sum, count, etc.).
+- Grouping data using .groupby() for advanced aggregations.
+
+However, `pandas` not very nice to read or to write
+
+---
+
+# Data Wrangling and Manipulation
+
+`polars` is a new project for DataFrame manipulation.
+
+It is lightning fast and a bit more user friendly than `pandas`. 
+
+&lt;img src="https://codecut.ai/wp-content/uploads/2024/07/pandas_vs_polars-1-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Data Wrangling with Polars
+
+There are five operations that you will use to do the vast majority of data manipulations:
+
+- `Extension` i.e., Make new variables (create new variables with functions of existing variables)
+
+- `Reduction` i.e., Subset observations (pick observations by their values)
+
+- `Selection` i.e., Subset variables (pick variables by their names)
+
+- `Aggregation` i.e., Summarise data (collapse many values down to a single summary)
+
+- `Combination` i.e., Merge two or more datasets using a common variable
+
+---
+
+# Load polars
+
+To load the polars package:
+
+
+``` python
+import polars as pl
+```
+
+In the following code inside these slides:
+
+- `pl` is the acronym to call functions from the package
+- `pl.col("variable name")` will access the specific `variable` 
+
+---
+
+# The gapminder dataset
+
+The dataset used today is called `gapminder`. 
+
+Each row corresponds to a country at a specific year. For each row, we have 6 columns:
+
+- **country**: Name of country.
+- **year**: Year of the observation (between 1952 and 2007).
+- **pop**: Number of people living in the country.
+- **continent**: Which of the five continents the country is part of. 
+- **lifeExp**: Life expectancy in years.
+- **gdpPercap**: Gross domestic product (in US dollars).
+
+to use the `gapminder` dataset, use the function `pl.read_csv` on the url:
+
+&gt; https://raw.githubusercontent.com/damien-dupre/damien-dupre.github.io/refs/heads/main/gapminder.csv
+
+
+``` python
+gapminder = pl.read_csv("https://raw.githubusercontent.com/damien-dupre/damien-dupre.github.io/refs/heads/main/gapminder.csv")
+```
+
+---
+
+# The polars Syntax
+
+The following code displays the 5 first rows with the `head()` function:
+
+
+``` python
+gapminder.head(5)
+```
+
+Instead, you can type:
+
+``` python
+(gapminder
+  .head(5)
+)
+```
+
+This way looks longer but it will be very useful to chain different transformations!
+
+---
+
+# Method Chaining
+
+Many people don't need to be told why method chaining is nice. Many languages make it easy to write
+`thing.min().abs().str()` instead of `str(abs(min(thing)))`.
+
+It's not always easy for libraries to accommodate method chaining - in fancy terms, to be [fluent interfaces](https://en.wikipedia.org/wiki/Fluent_interface). Even Pandas used to be much less fluent:
+when *Modern Pandas* was released, methods like `assign` and `pipe` were quite recent.
+
+Fortunately Polars is very fluent and can be read easily using Method Chaining.
+
+
+``` python
+(gapminder
+  .with_columns(gdp_total = pl.col("pop") * pl.col("gdpPercap"))
+  .select(
+    pl.col("gdp_total"),
+    pl.col("year").alias("measure_year"),
+    pl.col("pop").alias("total_pop")
+    )
+  .group_by(pl.col("measure_year"))
+  .agg(pl.col("gdp_total").mean().alias("gdp_total_average"))
+)
+```
+
+---
+class: title-slide, middle
+
+## Live Demo
+
+---
+class: title-slide, middle
+
+## Exercise
+
+1/ Load Polars:
+
+
+``` python
+import polars as pl
+```
+
+2/ Create a `gapminder` object using the `polars` function `read_csv`:
+
+
+``` python
+gapminder = pl.read_csv("https://raw.githubusercontent.com/damien-dupre/damien-dupre.github.io/refs/heads/main/gapminder.csv")
+```
+
+3/ Use the function `head()` on the gapminder object
+
+
+``` python
+gapminder.head(5)
+```
+
+<div class="countdown" id="timer_33337c98" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+class: inverse, mline, center, middle
+
+# 1. The select() function
+
+---
+
+# The select() function
+
+It is not uncommon to get datasets with hundreds or even thousands of variables. In this case, the first challenge is often **narrowing in on the variables** you are actually interested in. 
+
+`select()` allows you to rapidly zoom in on a **useful subset** using operations based on the names of the variables. 
+
+Again the first argument is the name of the **data frame** object to process and the following arguments are the **name of the columns to keep**.
+
+
+``` python
+(gapminder
+  .select(
+    pl.col("country"),
+    pl.col("year"),
+    pl.col("pop")
+  )
+)
+```
+
+<span>&lt;i class="fas  fa-exclamation-triangle faa-flash animated faa-slow " style=" color:red;"&gt;&lt;/i&gt;</span> Importantly, **Column/Variable names explicitly mentioned** with Polars using the function `pl.col()`
+
+---
+
+# Select and rename variables
+
+While you are keeping only specify variables with `select()`, these variables can also be renamed on the same time. 
+
+The function `alias()` with the **new name** overwrite the **old name**.
+
+Example:
+
+
+``` python
+(gapminder
+  .select(
+    pl.col("country"),
+    pl.col("year").alias("measure_year"),
+    pl.col("pop").alias("total_pop")
+  )
+)
+```
+
+---
+class: title-slide, middle
+
+## Live Demo
+
+---
+class: title-slide, middle
+
+## Exercise
+
+From the data frame object `gapminder`, select the columns `lifeExp` and `gdpPercap` and rename them as life_expectancy and gdp_per_capita:
+
+
+``` python
+(gapminder
+  .select(
+    __.___(____).____(_____),
+    __.___(____).____(_____)
+  )
+)
+```
+
+<div class="countdown" id="timer_3e19f35d" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+class: inverse, mline, center, middle
+
+# 2. The filter() function
+
+---
+
+# The filter() function
+
+You will want to isolate bits of your data; maybe you want to only look at a single country or a few years. Polars calls this subsetting and `filter()` allows you to **subset observations based on their values**.
+
+`filter()`'s transformation is a conditional statement, only observations TRUE to the condition are kept.
+
+For example:
+
+
+``` python
+(gapminder
+  .filter(pl.col("country") == "Ireland")
+)
+```
+
+- A Column/Variable is an array containing multiple values inside the data frame object.
+- The string "Ireland" does not exist in our environment and will not be saved. It is here just as a value, which explains the quotation marks.
+
+---
+
+# Comparisons
+
+To use filtering effectively, you have to know how to select the observations that you want using the **comparison operators**. Python provides the standard suite: `&gt;`, `&gt;=`, `&lt;`, `&lt;=`, `!=` (not equal), and `==` (exactly equal).
+
+When you are starting out with python, the **easiest mistake to make** is to use `=` instead of `==` when testing for equality. When this happens you will get an informative error:
+
+
+``` python
+(gapminder
+  .filter(pl.col("country") = "Ireland")
+)
+```
+
+<span>&lt;i class="fas  fa-exclamation-triangle faa-flash animated faa-slow " style=" color:red;"&gt;&lt;/i&gt;</span> The single equal sign `=` is only to assign values to argument in functions whereas the double equal sign `==` checks for equality (use the "exactly equal" term to remember).
+
+---
+
+# Multiple filters and multipe values
+
+Multiple can be filtered using specific variables like `is_in([])` or `is_between()`.
+
+Multiple filters can be added one after the other, separated with a comma.
+
+
+``` python
+(gapminder
+  .filter(
+    pl.col("country").is_in(["Germany", "United States"]),
+    pl.col("year").is_between(2000, 2007)
+  )
+)
+```
+
+---
+class: title-slide, middle
+
+## Live Demo
+
+---
+class: title-slide, middle
+
+## Exercise
+
+1/ Be sure that the packages `polars` is loaded
+
+2/ Be sure that the object `gapminder` is created
+
+3/ Create a new object that only contains data for France
+
+
+``` python
+_____ = (_____
+  .filter(__.___("country") == ______)
+)
+```
+
+4/ Create a new object using the previous object that only contains data for France in 1982
+
+<div class="countdown" id="timer_f2b797a8" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+class: inverse, mline, center, middle
+
+# 3. The with_columns() function
+
+---
+
+# The with_columns() function
+
+Besides selecting sets of existing columns, it is often useful to **add new columns** that are functions of existing columns. That is the job of `with_columns()`.  
+
+Once again the first element is the **name of the data frame** object to modify, then the second element is `with_columns()`. Inside `with_columns()`, the name of the new variable is followed by the `=` sign and the **condition creating the new values**.
+
+For example we can create a new column called `gdp_total` which contains the values resulting from the multiplication between `pop` and `gdpPercap`:
+
+
+``` python
+(gapminder
+  .with_columns(gdp_total = pl.col("pop") * pl.col("gdpPercap"))
+)
+```
+
+`with_columns()` can also create multiple columns in the same statement, they just have to be separated by a comma `,`.
+
+---
+class: title-slide, middle
+
+## Live Demo
+
+---
+class: title-slide, middle
+
+## Exercise
+
+From the data frame object `gapminder`, create a new column called `country_upper` with the function `.str.to_uppercase()` on the column `country`:
+
+
+``` python
+____ = (____
+  .____(____ = __.____("____")._____)
+)
+```
+
+<div class="countdown" id="timer_1d382537" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+class: inverse, mline, center, middle
+
+# 4. The group_by() and agg() functions
+
+---
+
+# Summarise your data
+
+You can summarise your data with the function `len()`, `sum()`, `mean()`, `std()`, `median()` when selecting variables.
+
+For example, if we applied exactly the same code to a data frame, we get the average population per observation:
+
+
+``` python
+(gapminder
+  .select(pl.col("pop").mean())
+)
+```
+
+This summary can be renamed for transparency:
+
+
+``` python
+(gapminder
+  .select(pl.col("pop").mean().alias("pop_average"))
+)
+```
+
+---
+
+# The group_by() and agg() functions
+
+Summarising is not terribly useful **unless done for multiple groups** with `group_by()` and `agg()`. 
+
+For example, if we applied exactly the same code to a data frame **grouped by year**, we get the average world population per year:
+
+
+``` python
+(gapminder
+  .group_by(pl.col("year"))
+  .agg(pl.col("pop").mean().alias("pop_average"))
+)
+```
+
+---
+class: title-slide, middle
+
+## Live Demo
+
+---
+class: title-slide, middle
+
+## Exercise
+
+1/ From the data frame object `gapminder`, summarise the population average with the `mean()` function by `year` and by `continent` by adding the second grouping variable after the first one (use a coma to separate them):
+
+
+``` python
+(gapminder
+  .group_by(
+    pl.col("year"),
+    __.___("_________")
+    )
+  .agg(pl.col("pop").mean().alias("pop_average"))
+)
+```
+
+2/ From the data frame object `gapminder`, summarise the population standard deviation with the `std()` function by `year` and by `continent` by adding the second grouping variable after the first one (use a coma to separate them).
+
+<div class="countdown" id="timer_a40298c4" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+class: inverse, mline, center, middle
+
+# 5. More complex operations
+
+---
+
+# More complex operations
+
+Functions can be chained to create more complex queries according to your needs. In the example below we combine some of the contexts we have seen so far to create a more complex query:
+
+
+``` python
+(gapminder
+  .with_columns(gdp_total = pl.col("pop") * pl.col("gdpPercap"))
+  .select(
+    pl.col("gdp_total"),
+    pl.col("year").alias("measure_year"),
+    pl.col("pop").alias("total_pop")
+    )
+  .group_by(pl.col("measure_year"))
+  .agg(pl.col("gdp_total").mean().alias("gdp_total_average"))
+)
+```
+
+---
+class: title-slide, middle
+
+## Live Demo
+
+---
+class: title-slide, middle
+
+## Exercise
+
+1/ From the data frame object `gapminder`, summarise the sum of the worldwide population by `year`
+
+2/ From the data frame object `gapminder`, summarise the lifeExp average with the `mean()` function by `year` and by `continent`
+
+<div class="countdown" id="timer_8551c7f3" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+class: inverse, mline, center, middle
+
+# 6. The join() functions
+
+---
+
+# Join 2 Tables
+
+.pull-left[
+The principle is simple, two different tables are sharing a **key variable**. By joining these two table by this key variable, it is possible to merge them into one table and to keep all variables.
+
+However, there are different cases, imagine that your X table (on the left) has more observations on the key variable than the Y table (on the right)
+
+]
+
+.pull-right[
+&lt;img src="https://raw.githubusercontent.com/gadenbuie/tidyexplain/master/images/static/png/original-dfs.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+You might want to keep:
+- Only the observations included in the left table
+- Only the observations included in the right table
+- Only the observations included in both tables
+- All observations
+
+For more visualisation see [Tidy Animated Verbs](https://www.garrickadenbuie.com/project/tidyexplain/)
+
+---
+
+# Join 2 Tables with Same Index Name
+
+Create 2 dataframe objects sharing 2 key variables: country and year
+
+
+``` python
+table_1 = (gapminder
+  .select(pl.col("country"), pl.col("year"), pl.col("pop"))
+)
+table_2 = (gapminder
+  .select(pl.col("country"), pl.col("year"), pl.col("lifeExp"))
+)
+```
+
+Different possibilities to automatically join the dataframe objects
+
+
+``` r
+table_right_joined = (table_1
+  .join(table_2, on = "country", how = "right")
+)
+```
+
+`how` can be left, right, inner, or full.
+
+Set the argument `on` to manually choose multiple key variables, example:
+
+
+``` python
+table_full_joined = (table_1
+  .join(table_2, on = ["country", "year"], how = "full")
+)
+```
+
+---
+
+# Join 2 Tables with Different Index Name
+
+Sometimes the name of the variable index used to match the two tables is different, in this case it is necessary to __manually specify the matching variables__.
+
+
+``` python
+table_1 = (gapminder
+  .select(pl.col("country"), pl.col("year"), pl.col("pop"))
+)
+table_2 = (gapminder
+  .select(
+    pl.col("country").alias("country_measure"),
+    pl.col("year").alias("year_measure"),
+    pl.col("lifeExp"))
+)
+```
+
+Set the argument `by` to manually choose the key variables, and specify the association:
+
+
+``` python
+(table_1
+  .join(
+    table_2, 
+    left_on = ["country", "year"],
+    right_on = ["country_measure", "year_measure"]
+  )
+)
+```
+
+---
+
+# References
+
+Here is a list of very useful documents to get further:
+
+- [Polars official user guide](https://docs.pola.rs/)
+- [Modern Polars - A side-by-side comparison of the Polars and Pandas libraries](https://kevinheavey.github.io/modern-polars/)
+- [Polars - A Refreshingly Great DataFrame Library](https://blog.londogard.com/posts/2022-11-30-why-polars.html)
+- [(Pretty) big data wrangling with DuckDB and Polars](https://grantmcdermott.com/duckdb-polars/slides/slides.html)
+- [DataFrames on steroids with Polars](https://mint.westdri.ca/python/wb_polars_slides)
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class: inverse, mline, left, middle
+
+&lt;img class="circle" src="https://github.com/damien-dupre.png" width="250px"/&gt;
+
+# Thanks for your attention and don't hesitate to ask if you have any question!
+
+[<svg aria-hidden="true" role="img" viewBox="0 0 496 512" style="height:1em;width:0.97em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg> @damien-dupre](http://github.com/damien-dupre)  
+[<svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M579.8 267.7c56.5-56.5 56.5-148 0-204.5c-50-50-128.8-56.5-186.3-15.4l-1.6 1.1c-14.4 10.3-17.7 30.3-7.4 44.6s30.3 17.7 44.6 7.4l1.6-1.1c32.1-22.9 76-19.3 103.8 8.6c31.5 31.5 31.5 82.5 0 114L422.3 334.8c-31.5 31.5-82.5 31.5-114 0c-27.9-27.9-31.5-71.8-8.6-103.8l1.1-1.6c10.3-14.4 6.9-34.4-7.4-44.6s-34.4-6.9-44.6 7.4l-1.1 1.6C206.5 251.2 213 330 263 380c56.5 56.5 148 56.5 204.5 0L579.8 267.7zM60.2 244.3c-56.5 56.5-56.5 148 0 204.5c50 50 128.8 56.5 186.3 15.4l1.6-1.1c14.4-10.3 17.7-30.3 7.4-44.6s-30.3-17.7-44.6-7.4l-1.6 1.1c-32.1 22.9-76 19.3-103.8-8.6C74 372 74 321 105.5 289.5L217.7 177.2c31.5-31.5 82.5-31.5 114 0c27.9 27.9 31.5 71.8 8.6 103.9l-1.1 1.6c-10.3 14.4-6.9 34.4 7.4 44.6s34.4 6.9 44.6-7.4l1.1-1.6C433.5 260.8 427 182 377 132c-56.5-56.5-148-56.5-204.5 0L60.2 244.3z"/></svg> https://damien-dupre.github.io](https://damien-dupre.github.io)  
+[<svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M16.1 260.2c-22.6 12.9-20.5 47.3 3.6 57.3L160 376V479.3c0 18.1 14.6 32.7 32.7 32.7c9.7 0 18.9-4.3 25.1-11.8l62-74.3 123.9 51.6c18.9 7.9 40.8-4.5 43.9-24.7l64-416c1.9-12.1-3.4-24.3-13.5-31.2s-23.3-7.5-34-1.4l-448 256zm52.1 25.5L409.7 90.6 190.1 336l1.2 1L68.2 285.7zM403.3 425.4L236.7 355.9 450.8 116.6 403.3 425.4z"/></svg> damien.dupre@dcu.ie](mailto:damien.dupre@dcu.ie)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="libs/cols_macro.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "zenburn",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
