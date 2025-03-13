@@ -11,7 +11,11 @@ output:
       highlightStyle: zenburn
       highlightLines: true
       countIncrementalSlides: false
+      
+params:
+  module_code: "BAA1030"
+  lecture_number: "9"
 ---
 
-```{r child = '/Users/damienhome/Drive/Projects/lectures/rstats/tidyverse.Rmd'}
+```{r child = '/Users/damienhome/Drive/Projects/lectures/python/plotnine.Rmd'}
 ```
