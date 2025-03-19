@@ -1,6 +1,6 @@
 ---
 title: "BAA1030 - Data Analytics and Story Telling"
-subtitle: "Lecture 10: Visualisation in R with {ggplot2}"
+subtitle: "Lecture 10: Visualisation in python with plotnine"
 author: "Damien Dupré"
 date: "Dublin City University"
 output:
@@ -18,5 +18,5 @@ params:
   lecture_number: "10"
 ---
 
-```{r child = '/Users/damienhome/Drive/Projects/lectures/rstats/ggplot.Rmd'}
+```{r child = '/Users/damienhome/Drive/Projects/lectures/python/plotnine.Rmd'}
 ```
