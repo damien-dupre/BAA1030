@@ -1,6 +1,6 @@
 ---
 title: "BAA1030 - Data Analytics and Story Telling"
-subtitle: "Lecture 11: Introduction to Quarto"
+subtitle: "Lecture 11: Publish your Quarto with GitHub"
 author: "Damien Dupré - Dublin City University"
 output:
   xaringan::moon_reader:
@@ -11,7 +11,11 @@ output:
       highlightStyle: zenburn
       highlightLines: true
       countIncrementalSlides: false
+      
+params:
+  module_code: "BAA1030"
+  assignment_2_deadline: "April 13th, 1pm"
 ---
 
-```{r child = '/Users/damienhome/Drive/Projects/lectures/rstats/quarto.Rmd'}
+```{r child = '/Users/damienhome/Drive/Projects/lectures/rstats/github.Rmd'}
 ```
