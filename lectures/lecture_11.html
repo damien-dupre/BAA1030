@@ -8,6 +8,8 @@
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+    <link href="libs/countdown-0.4.0/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown-0.4.0/countdown.js"></script>
     <link href="libs/font-awesome-animation-1.0/font-awesome-animation-emi.css" rel="stylesheet" />
     <script src="libs/fontawesome-5.0.13/js/fontawesome-all.min.js"></script>
     <link rel="stylesheet" href="css/custom_design.css" type="text/css" />
@@ -48,11 +50,15 @@ class: center, middle, inverse, title-slide
 
 
 
+
+
+
+
 # Objectives
 
 The last tool for data analytics and visualisations displayed in this lectures is called **GitHub**.
 
-GitHub has a lot of different functions. For now, we will only see how to use it to **published the html document output from our Quarto file**.
+GitHub has a lot of different functions. For now, we will only see how to use it to **published the html document output from Quarto**.
 
 .center[
 ![](http://www.quickmeme.com/img/75/7509f68823389e4af3777ca6d3744c632cc32ab3547bc56e319126aa29ab149a.jpg)&lt;!-- --&gt;
@@ -91,13 +97,18 @@ And even more that I am not aware of!
 ---
 class: title-slide, middle
 
-## Your Turn! Sign up to GitHub
+## 🛠️ Your Turn!
 
-1/ Go to https://github.com and click **sign up**
+1/ Go to https://github.com and click **sign up** (or **log in** if you already have an account)
 
 2/ Fill the information requested, find a **good user name** as it will be used for your default website (e.g., `firstname-name` is usually good)
 
 3/ Later, add a profile picture
+
+<div class="countdown" id="timer_5c52a71a" data-warn-when="60" data-update-every="1" tabindex="0" style="top:0;right:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
 
 ---
 
@@ -121,7 +132,7 @@ The core principle of GitHub is a remote desktop (or profile) with a folder call
 ---
 class: title-slide, middle
 
-## Your Turn!
+## 🛠️ Your Turn!
 
 Follow the steps here after to **create your first repository**.
 
@@ -187,7 +198,7 @@ In GitHub, a commit is a saved change to a project's source code or other files.
 ---
 class: title-slide, middle
 
-## Exercise
+## 🛠️ Your Turn!
 
 When you created your new repository, you initialized it with a README file. README files are a great place to describe your project in more detail, or add some documentation such as how to install or use your project. The contents of your README file are automatically shown on the front page of your repository.
 
@@ -240,27 +251,18 @@ When you created your new repository, you initialized it with a README file. REA
 ---
 class: title-slide, middle
 
-## Your Turn!
+## 🛠️ Your Turn!
 
-**Fill you Repository up with the files** created when Rendering Quarto to html by following the steps described here after
-
----
-
-# Fill up your Repository
-
-0/ (Only if you are using Rstudio in Posit cloud) **Export your Rstudio project folder from Posit cloud to your computer** and **unzip this folder on your computer**
-
-![](https://raw.githubusercontent.com/damien-dupre/img/main/posit_cloud_export_project.gif)&lt;!-- --&gt;
-
----
-
-# Fill up your Repository
+**Fill you Repository up with the `report.html` file** created when you used Quarto to render the `report.ipynb` file to html by following the steps described here after:
 
 1/ In your Repository Page in GitHub, Click **Add files** then **Upload files**
 
-2/ **Drop your entire unzipped folder** in the main box and **commit your changes**
+2/ **Drop your `report.html` file** in the main box and **commit your changes**
 
-![](https://raw.githubusercontent.com/damien-dupre/img/main/upload_project_github.gif)&lt;!-- --&gt;
+<div class="countdown" id="timer_e3b58be5" data-warn-when="60" data-update-every="1" tabindex="0" style="top:0;right:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
 
 ---
 class: inverse, mline, center, middle
@@ -275,7 +277,7 @@ GitHub Pages is a **web hosting service** offered by GitHub that allows you to h
 
 GitHub Pages supports several **different types of websites, including personal or project pages**, documentation, blogs, and more. You can use custom domains or subdomains for your website, and GitHub Pages also supports HTTPS encryption for secure communication.
 
-To create a GitHub Pages website, you need to have a GitHub account and a r**epository containing your website's HTML, CSS, and other files**. Once you've created your repository and pushed your website's files to it, you can e**nable GitHub Pages in the repository settings**. Your website will then be published at a URL based on your GitHub username and repository name (e.g., username.github.io/repository).
+To create a GitHub Pages website, you need to have a GitHub account and a **repository containing your website's HTML, CSS, and other files**. Once you've created your repository and pushed your website's files to it, you can **enable GitHub Pages in the repository settings**. Your website will then be published at a URL based on your GitHub username and repository name (e.g., username.github.io/repository).
 
 ---
 
@@ -286,7 +288,7 @@ To create a GitHub Pages website, you need to have a GitHub account and a r**epo
 ---
 class: title-slide, middle
 
-## Your Turn!
+## 🛠️ Your Turn!
 
 Turn on GitHub Pages for your project repository:
 
@@ -294,7 +296,12 @@ Turn on GitHub Pages for your project repository:
 
 2/ In **Branch**, instead of None select **Main** and click **Save**
 
-3/ Click on **Actions** and wait that "pages build and deployment" finishes. When it's done, go to **https://username.github.io/repository/**
+3/ Click on **Actions** and wait that "pages build and deployment" finishes. When it's done, go to **https://username.github.io/repository/report**
+
+<div class="countdown" id="timer_dfe72e44" data-warn-when="60" data-update-every="1" tabindex="0" style="top:0;right:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
 
 ---
 
@@ -302,9 +309,9 @@ Turn on GitHub Pages for your project repository:
 
 By default, your html report will be published at:
 
-**https://username.github.io/repository/project_folder/report**
+**https://username.github.io/repository/report**
 
-For example, if:
+If:
 
 - Your GitHub username is **damien-dupre**
 - Your Repository name is **data-analytics**
@@ -341,13 +348,23 @@ There are two special cases to consider with URLs:
 
 **https://damien-dupre.github.io/project/report**
 
+---
+
+# GitHub Pages URL
+
 Both shortcut could be used to display a document at:
 
-**https://username.github.io/project_folder**
+**https://username.github.io**
 
-Here, in this example:
+If:
 
-**https://damien-dupre.github.io/project**
+- Your GitHub username is **damien-dupre**
+- Your Repository name is **damien-dupre.github.io**
+- Your html file name is **index.html**
+
+Then your report will be published at th URL:
+
+**https://damien-dupre.github.io**
 
 
 ---
@@ -361,15 +378,17 @@ class: inverse, mline, center, middle
 
 ### Context
 
-You are Data Analyst for the UNICEF organisation, and you have been asked to design a report to raise awareness of the public on a specific world issue.
+You are Data Analyst for the UNICEF organisation, an you have been asked to design a report to raise awareness of the public on a specific world issue.
 
 ### Task
 
-Using the files that you already have received by email (i.e., one or both **unicef_indicator_1.csv** and **unicef_indicator_2.csv** files as well as **unicef_metadata.csv** file), **create a Quarto document that contains a story** (i.e., narrative) **and some visualisations** to support this story. **Render** this document as html and **publish it with GitHub Pages**.
+Using the files that you already have received by email (i.e., one or both **unicef_indicator_1.csv** and **unicef_indicator_2.csv** files as well as **unicef_metadata.csv** file), **create an html report that contains a story** (i.e., narrative) **and some visualisations** to support this story. 
+
+This html report must be **rendered by Quarto** and **published with GitHub Pages**.
 
 ### Story
 
-You can copy-paste the exact same text included in your Tableau Dashboard assignment. You can also modify it or write a new one if you prefer. This story has to __use Markdown emphasis style__ (e.g., title levels, italic/bold font, list and bullet points, ...).
+You can copy-paste the exact same text included in your Tableau Dashboard assignment. You can also modify it or write a new one if you prefer. This story has to __use text emphasis styles__ (e.g., title levels, italic/bold font, list and bullet points, ...). 
 
 ---
 
@@ -387,19 +406,38 @@ They will have to be created with ggplot2. You need to __include 4 visualisation
 ]
 
 .pull-right[
-### Assessment Criteria
+### HTML Output
 
-- Overall R code (25%)
-- Data transformations (25%)
-- Ggplot design (25%)
-- Markdown style (25%)
+The report must contain a YAML text cell with, **at least**, the following code:
+
+```yaml
+---
+format:
+  html:
+    embed-resources: true
+    code-fold: true
+---
+```
 ]
 
-### Assessment Submission
+More specifications of the YAML, the addition of a HTML theme, full customisation of the visualisations and the use of hashpipe options in the code cells will be positively assessed.
 
-Submit the URL of your Quarto report published with GitHub Pages on the Assignment Upload module of the BAA1030 Loop page
+---
 
-**Deadline April 13th, 1pm**
+# Assignment Instructions
+
+## Submission
+
+Submit the **URL of your html report** published with GitHub Pages AND the link to your `report.ipynb` file from your Google Drive on the **BAA1030 Loop page** by **April 13th, 1pm**.
+
+## Assessment Criteria
+
+- Overall Code (25%)
+- Data Transformations (25%)
+- Visualisation Design (25%)
+- HTML Output (25%)
+
+See criteria quality grid for a description of expected submissions.
 
 ---
 
