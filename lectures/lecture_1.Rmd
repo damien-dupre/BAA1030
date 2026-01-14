@@ -15,9 +15,10 @@ output:
 params:
   module_code: "BAA1030"
   lecture_schedule: "Wednesday, between 11am and 1pm"
-  assignment_1_deadline: "23/03/2025"
-  assignment_2_deadline: "13/04/2025 (Only 3 weeks after Assignment 1)"
-  assignment_3_deadline: "01/05/2025"
+  assignment_1_deadline: "23/03/2026"
+  assignment_2_deadline: "07/04/2026 (Only 2 weeks after Assignment 1)"
+  assignment_3_deadline: "01/05/2026"
+  assignment_4_deadline: "08/04/2026"
 ---
 
 ```{r child = '/Users/damienhome/Library/CloudStorage/OneDrive-Personal/Projects/lectures/data_analytics/introduction.Rmd'}
