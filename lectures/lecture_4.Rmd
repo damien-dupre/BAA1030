@@ -1,6 +1,6 @@
 ---
 title: "BAA1030 - Data Analytics and Story Telling"
-subtitle: "Lecture 4: Introduction to Power BI"
+subtitle: "Lecture 4: Introduction to Tableau"
 author: "Damien Dupré - Dublin City University"
 output:
   xaringan::moon_reader:
@@ -13,5 +13,5 @@ output:
       countIncrementalSlides: false
 ---
 
-```{r child = '/Users/damienhome/Drive/Projects/lectures/powerbi/introduction.Rmd'}
+```{r child = '/Users/damienhome/Drive/Projects/lectures/tableau/introduction.Rmd'}
 ```
