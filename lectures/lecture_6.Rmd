@@ -1,6 +1,6 @@
 ---
 title: "BAA1030 - Data Analytics and Story Telling"
-subtitle: "Lecture 6: Advanced Features in Tableau"
+subtitle: "Lecture 6: Introduction to Python"
 author: "Damien Dupré - Dublin City University"
 output:
   xaringan::moon_reader:
@@ -14,8 +14,8 @@ output:
       
 params:
   module_code: "BAA1030"
-  assignment_1_deadline: "23/03/2025"
+  lecture_number: "6"
 ---
 
-```{r child = '/Users/damienhome/Drive/Projects/lectures/tableau/advanced_features.Rmd'}
+```{r child = '/Users/damienhome/Drive/Projects/lectures/python/introduction.Rmd'}
 ```

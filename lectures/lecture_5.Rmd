@@ -1,6 +1,6 @@
 ---
 title: "BAA1030 - Data Analytics and Story Telling"
-subtitle: "Lecture 5: Introduction to Tableau"
+subtitle: "Lecture 5: Advanced Features in Tableau"
 author: "Damien Dupré - Dublin City University"
 output:
   xaringan::moon_reader:
@@ -11,7 +11,11 @@ output:
       highlightStyle: zenburn
       highlightLines: true
       countIncrementalSlides: false
+      
+params:
+  module_code: "BAA1030"
+  assignment_1_deadline: "23/03/2026"
 ---
 
-```{r child = '/Users/damienhome/Drive/Projects/lectures/tableau/introduction.Rmd'}
+```{r child = '/Users/damienhome/Drive/Projects/lectures/tableau/advanced_features.Rmd'}
 ```
