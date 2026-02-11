@@ -10,6 +10,8 @@
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
     <link href="libs/font-awesome-animation-1.0/font-awesome-animation-emi.css" rel="stylesheet" />
     <script src="libs/fontawesome-5.0.13/js/fontawesome-all.min.js"></script>
+    <link href="libs/countdown-0.4.0/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown-0.4.0/countdown.js"></script>
     <link rel="stylesheet" href="css/custom_design.css" type="text/css" />
   </head>
   <body>
@@ -27,23 +29,6 @@ class: center, middle, inverse, title-slide
 ]
 
 ---
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -646,6 +631,484 @@ Past challenges are an excellent way to have an idea of outstanding dashboards:
 - [Iron Viz](https://www.tableau.com/community/iron-viz)
 
 &lt;img src="https://media.makeameme.org/created/use-tableau-you.jpg" width="30%" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+class: title-slide, middle
+
+## Visualisation Design Workshop
+
+---
+
+# Programme
+
+## Part 1: Joining Tables
+
+## Part 2: Map Visualisations
+
+## Part 3: Time Series Visualisations
+
+## Part 4: Scatter plots
+
+---
+
+# "Gapminder" Dataset
+
+In February 2006, a Swedish physician and data advocate named Hans Rosling gave a TED talk titled **“The best stats you’ve ever seen”** where he presented global economic, health, and development data from the website www.gapminder.org. For this tutorial, are going to use a dataset from this website.
+
+For each row, we have 6 columns:
+- **country**: Name of country.
+- **year**: Year of the observation (between 1952 and 2007).
+- **pop**: Number of people living in the country.
+- **continent**: Which of the five continents the country is part of. 
+- **lifeExp**: Life expectancy in years.
+- **gdpPercap**: Gross domestic product (in US dollars).
+
+
+|country     |continent | year| lifeExp|      pop| gdpPercap|
+|:-----------|:---------|----:|-------:|--------:|---------:|
+|Afghanistan |Asia      | 1952|  28.801|  8425333|  779.4453|
+|Afghanistan |Asia      | 1957|  30.332|  9240934|  820.8530|
+|Afghanistan |Asia      | 1962|  31.997| 10267083|  853.1007|
+|Afghanistan |Asia      | 1967|  34.020| 11537966|  836.1971|
+|Afghanistan |Asia      | 1972|  36.088| 13079460|  739.9811|
+|Afghanistan |Asia      | 1977|  38.438| 14880372|  786.1134|
+
+---
+
+class: inverse, mline, center, middle
+
+# Part 1: Joining Tables
+
+---
+
+# Joining Tables Exercises
+
+## On the module loop page, download the following files and have a look at them:
+- ## data_left.csv
+- ## data_right_1.csv
+- ## data_right_2.csv
+- ## data_right_3.csv
+
+---
+
+# Joining Tables Exercises
+
+## In tableau public...
+- ## join data_left.csv with data_right_1.csv
+
+<div class="countdown" id="timer_7c2f3bd8" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+--
+
+.pull-left[
+## data_left.csv
+
+|country     | year|      pop|
+|:-----------|----:|--------:|
+|Afghanistan | 1952|  8425333|
+|Afghanistan | 1957|  9240934|
+|Afghanistan | 1962| 10267083|
+|Afghanistan | 1967| 11537966|
+|Afghanistan | 1972| 13079460|
+|Afghanistan | 1977| 14880372|
+]
+
+.pull-right[
+## data_right_1.csv
+
+|country     | year| lifeExp|
+|:-----------|----:|-------:|
+|Afghanistan | 1952|  28.801|
+|Afghanistan | 1957|  30.332|
+|Afghanistan | 1962|  31.997|
+|Afghanistan | 1967|  34.020|
+|Afghanistan | 1972|  36.088|
+|Afghanistan | 1977|  38.438|
+]
+
+---
+
+# Joining Tables Exercises
+
+## In tableau public...
+- ## join data_left.csv with data_right_2.csv
+
+<div class="countdown" id="timer_e3a74e7e" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+--
+
+.pull-left[
+## data_left.csv
+
+|country     | year|      pop|
+|:-----------|----:|--------:|
+|Afghanistan | 1952|  8425333|
+|Afghanistan | 1957|  9240934|
+|Afghanistan | 1962| 10267083|
+|Afghanistan | 1967| 11537966|
+|Afghanistan | 1972| 13079460|
+|Afghanistan | 1977| 14880372|
+]
+
+.pull-right[
+## data_right_2.csv
+
+|location    | date| gdpPercap|
+|:-----------|----:|---------:|
+|Afghanistan | 1952|  779.4453|
+|Afghanistan | 1957|  820.8530|
+|Afghanistan | 1962|  853.1007|
+|Afghanistan | 1967|  836.1971|
+|Afghanistan | 1972|  739.9811|
+|Afghanistan | 1977|  786.1134|
+]
+
+---
+
+# Joining Tables Exercises
+
+## In tableau public...
+- ## join data_left.csv with data_right_3.csv
+
+<div class="countdown" id="timer_52ec7e77" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+--
+
+.pull-left[
+## data_left.csv
+
+|country     | year|      pop|
+|:-----------|----:|--------:|
+|Afghanistan | 1952|  8425333|
+|Afghanistan | 1957|  9240934|
+|Afghanistan | 1962| 10267083|
+|Afghanistan | 1967| 11537966|
+|Afghanistan | 1972| 13079460|
+|Afghanistan | 1977| 14880372|
+]
+
+.pull-right[
+## data_right_3.csv
+
+|country     |continent |
+|:-----------|:---------|
+|Afghanistan |Asia      |
+|Albania     |Europe    |
+|Algeria     |Africa    |
+|Angola      |Africa    |
+|Argentina   |Americas  |
+|Australia   |Oceania   |
+]
+
+---
+
+class: inverse, mline, center, middle
+
+# Part 2: Map Visualisations
+
+---
+
+# Map Visualisations Exercises
+
+## In tableau public...
+- ## Design a world map showing countries' life expectancy
+
+<div class="countdown" id="timer_d5a70265" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+--
+
+- ## Design a world map showing countries' population in 1952
+
+<div class="countdown" id="timer_7cf2917d" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+class: inverse, mline, center, middle
+
+# Part 3: Time Series Visualisations
+
+---
+
+# Time Series Visualisations Exercises
+
+## In tableau public...
+- ## Design a time series visualisation showing the evolution of countries' life expectancy
+
+<div class="countdown" id="timer_7f38ca97" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+--
+
+- ## Design a time series visualisation showing the evolution of countries' population and add a filter by country
+
+<div class="countdown" id="timer_d6d9e9a6" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+class: inverse, mline, center, middle
+
+# Part 4: Scatterplots
+
+---
+
+# Scatterplots Exercises
+
+## In tableau public...
+- ## Design a Scatterplot with countries' life expectancy and gdpPercap and customise this scatterplot
+
+<div class="countdown" id="timer_b69ed5da" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+class: title-slide, middle
+
+## Visualisation Design
+
+---
+
+# Programme
+
+## How to use screenspace?
+
+## How to structure information?
+
+## How to layout?
+
+## How to apply interactivity?
+
+---
+
+# Design Strategy
+
+Creating an prefect Tableau dashboard is easy if you follow these steps:
+
+#### Step 1: Basic Figures
+
+Create many figures that can be used to support your story but leave them with all default parameters
+
+#### Step 2: Basic Dashboard
+
+Use the most relevant figures in a basic dashboard without taking care of its design but including all the relevant elements (title, text, pictures)
+
+#### Step 3: Figure Improvement
+
+Go back to the worksheet each figure included in the dashboard and customise them: Colour, size, shapes, title, captions, axes, and interactions
+
+#### Step 4: Dashboard Improvement
+
+Go back to the dashboard and customise it: Background, colours, fonts, layout and actions
+
+---
+
+# Overall Design Guidelines
+
+1. Don’t overwhelm viewers
+2. Avoid visual clutter
+3. Avoid poor visual design
+4. Don’t add too much data
+5. Provide for consistency
+6. Provide for interaction affordances
+7. Manage complexity
+9. Organize charts
+10. Increase information
+11. Avoid redundancy of information
+12. Design is an iterative process
+13. Context is very important
+14. Use color carefully
+
+---
+
+class: inverse, mline, center, middle
+
+# 1. How to use screenspace?
+
+&lt;!-- --- --&gt;
+
+&lt;!-- # Quotes --&gt;
+
+&lt;!-- &gt; “A visual display of the most important information needed to achieve one or more objectives; consolidated and arranged on a single screen so the information can be monitored at a glance.” --&gt;
+
+&lt;!-- Few, S., 2006. Information dashboard design: The effective visual communication of data (Vol. 2). Sebastopol, CA: O'reilly. --&gt;
+
+&lt;!-- &gt; “A dashboard seeks to add as a translator, not simply a mirror, setting the forms and parameters for how data are communicated.” --&gt;
+
+&lt;!-- Kitchin, R., Lauriault, T.P. and McArdle, G., 2015. Knowing and governing cities through urban indicators, city benchmarking and real-time dashboards. Regional Studies, Regional Science, 2(1), pp.6-28. --&gt;
+
+---
+
+# Dashboard Types
+
+&lt;img src="https://raw.githubusercontent.com/damien-dupre/img/main/dashboard_types.png" width="100%" style="display: block; margin: auto;" /&gt;
+.center.tiny[Source: Dashboard Design Patterns [🔗](https://dashboarddesignpatterns.github.io/)]
+
+- [See Dashboard Design Patterns Workshop for more details](https://dashboarddesignpatterns.github.io/docs/assets/Dashboard%20Design%20Workshop.pdf)
+
+---
+
+# Key Elements
+
+Every Dashboard should include the following key element to fill their screenspace:
+
+- A title
+- A written story including Introduction, Analysis, and Conclusion
+- Multiple visualisations
+
+Optional elements can be added such as images, buttons, or menus
+
+&lt;img src="https://raw.githubusercontent.com/damien-dupre/img/main/dashboard_key.png" width="70%" style="display: block; margin: auto;" /&gt;
+.center.tiny[Example of a dashboard structure. Not to necessary follow, for illustration only.]
+
+---
+
+# Key Elements: Title
+
+Let's have a look at examples from real dashboards [here](https://www.tableau.com/blog/tableau-public-viz-wrap-interesting-data-visualizations-2022)
+
+.pull-left[
+
+- A title should pinpoint the problem
+
+["Healthcare Crisis in Rural America"](https://public.tableau.com/app/profile/dennis.kao/viz/HealthcareCrisisinRuralAmericaProjectHealthViz/Dashboard1)
+
+- Affirmation or question
+
+["#CollegeGameday: Can My Family Out-Pick the Pundits?"](https://public.tableau.com/app/profile/sam.epley/viz/CollegeGamedayCanMyFamilyOut-PickthePundits/PickbyWeek)
+
+- Should be catchy
+
+["NBA Lords of the Rings"](https://public.tableau.com/app/profile/jeff.plattner4532/viz/NBALordsoftheRings/LordsoftheRings)
+
+]
+
+.pull-right[
+&lt;img src="https://raw.githubusercontent.com/damien-dupre/img/main/dashboard_key_title.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+&lt;!-- --- --&gt;
+&lt;!-- class: title-slide, middle --&gt;
+
+&lt;!-- ## Exercise --&gt;
+
+&lt;!-- Find a title for your Gapminder dashboard --&gt;
+
+&lt;!-- ```{r} --&gt;
+&lt;!-- countdown(minutes = 5, warn_when = 60) --&gt;
+&lt;!-- ``` --&gt;
+
+---
+
+# Key Elements: Story
+
+.pull-left[
+
+The story (narrative conveying the information) is structure around 3 parts: Introduction, Analysis, and Conclusion.
+
+### Introdcution
+
+Presents the context regarding the issue investigated
+
+]
+
+.pull-right[
+&lt;img src="https://raw.githubusercontent.com/damien-dupre/img/main/dashboard_key_story.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+### Analysis
+
+Uses each visualisation and extract the relevant information from them. Each information should be linked is some ways (e.g. temporal, complexity, geographical, logical, discursive, ...).
+
+### Conclusion
+
+Summarises the information and provides future recommendations/suggestions to the reader.
+
+&lt;!-- --- --&gt;
+&lt;!-- class: title-slide, middle --&gt;
+
+&lt;!-- ## Exercise --&gt;
+
+&lt;!-- Access the following dashboard [here](https://public.tableau.com/app/profile/parthagarwal/viz/ParthAgarwal-Final/Dash) and identify the recommendations/suggestions resulting from the information shared. --&gt;
+
+&lt;!-- ```{r out.width='100%'} --&gt;
+&lt;!-- include_img("dashboards/dashboard_story_ex.png") --&gt;
+&lt;!-- ``` --&gt;
+
+&lt;!-- ```{r} --&gt;
+&lt;!-- countdown(minutes = 5, warn_when = 60) --&gt;
+&lt;!-- ``` --&gt;
+
+&lt;!-- --- --&gt;
+&lt;!-- class: title-slide, middle --&gt;
+
+&lt;!-- ## Exercise --&gt;
+
+&lt;!-- Using Chat GPT, write a story for your Gapminder dashboard --&gt;
+
+&lt;!-- ```{r} --&gt;
+&lt;!-- countdown(minutes = 5, warn_when = 60) --&gt;
+&lt;!-- ``` --&gt;
+
+&lt;!-- --- --&gt;
+
+&lt;!-- # Key Elements: Visualisations --&gt;
+
+&lt;!-- .pull-left[ --&gt;
+
+&lt;!-- 1. Place your visualisations in a relevant order  --&gt;
+&lt;!-- 2. Make sure they are customised --&gt;
+&lt;!-- 3. Add a caption --&gt;
+&lt;!-- 4. Add global interactive features --&gt;
+
+&lt;!-- ] --&gt;
+
+&lt;!-- .pull-right[ --&gt;
+&lt;!-- ```{r out.width='100%'} --&gt;
+&lt;!-- include_img("dashboard_key_viz.png") --&gt;
+&lt;!-- ``` --&gt;
+&lt;!-- ] --&gt;
+
+&lt;!-- --- --&gt;
+&lt;!-- class: title-slide, middle --&gt;
+
+&lt;!-- ## Exercise --&gt;
+
+&lt;!-- 1. Insert some of your Gapminder visualisations (max 5) on a dashboard --&gt;
+&lt;!-- 2. Add your story and title --&gt;
+&lt;!-- 3. Configure global Filter and Highlight actions from the tab **Dashboard** and option **"Actions..."** --&gt;
+&lt;!-- 4. Modify the hover tooltip --&gt;
+
+&lt;!-- ```{r out.width='60%'} --&gt;
+&lt;!-- include_img("tableau_public_actions.png") --&gt;
+&lt;!-- ``` --&gt;
+
+&lt;!-- ```{r} --&gt;
+&lt;!-- countdown(minutes = 15, warn_when = 60) --&gt;
+&lt;!-- ``` --&gt;
 
 ---
 
