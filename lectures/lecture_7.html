@@ -8,6 +8,10 @@
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
     <link href="libs/countdown-0.4.0/countdown.css" rel="stylesheet" />
     <script src="libs/countdown-0.4.0/countdown.js"></script>
     <link href="libs/font-awesome-animation-1.0/font-awesome-animation-emi.css" rel="stylesheet" />
@@ -22,7 +26,7 @@ class: center, middle, inverse, title-slide
 # BAA1030 - Data Analytics and Story Telling
 ]
 .subtitle[
-## Lecture 7: Introduction to Python
+## Lecture 7: Data Wrangling with Polars
 ]
 .author[
 ### Damien Dupré - Dublin City University
@@ -52,397 +56,182 @@ class: center, middle, inverse, title-slide
 
 
 
-# Module Objectives Part 2
 
-In the first part of the module we have seen how to **design visualisations** and how to **use efficient software** to embedded stories and visualisations (for example Tableau).
 
-While a dashboard solution would be defined as "No-Code", the second part of this lecture will teach you how to design visualisations and to embed them as long as the story using **Open-Source coding technologies**.
 
-#### We will start from scratch:
 
-- Introduction to Python
-- Python for Visualisations
-- Introduction to Quarto
-- Introduction to GitHub and GitHub Pages
 
----
 
-# Example of Student Submissions
 
-&lt;iframe width="1000" height="450" src="https://mathis-yannicopoulos.github.io/Individual-Assignment/Indvidual%20Assignment.html"&gt;&lt;/iframe&gt;
 
-- [<svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M352 256c0 22.2-1.2 43.6-3.3 64H163.3c-2.2-20.4-3.3-41.8-3.3-64s1.2-43.6 3.3-64H348.7c2.2 20.4 3.3 41.8 3.3 64zm28.8-64H503.9c5.3 20.5 8.1 41.9 8.1 64s-2.8 43.5-8.1 64H380.8c2.1-20.6 3.2-42 3.2-64s-1.1-43.4-3.2-64zm112.6-32H376.7c-10-63.9-29.8-117.4-55.3-151.6c78.3 20.7 142 77.5 171.9 151.6zm-149.1 0H167.7c6.1-36.4 15.5-68.6 27-94.7c10.5-23.6 22.2-40.7 33.5-51.5C239.4 3.2 248.7 0 256 0s16.6 3.2 27.8 13.8c11.3 10.8 23 27.9 33.5 51.5c11.6 26 20.9 58.2 27 94.7zm-209 0H18.6C48.6 85.9 112.2 29.1 190.6 8.4C165.1 42.6 145.3 96.1 135.3 160zM8.1 192H131.2c-2.1 20.6-3.2 42-3.2 64s1.1 43.4 3.2 64H8.1C2.8 299.5 0 278.1 0 256s2.8-43.5 8.1-64zM194.7 446.6c-11.6-26-20.9-58.2-27-94.6H344.3c-6.1 36.4-15.5 68.6-27 94.6c-10.5 23.6-22.2 40.7-33.5 51.5C272.6 508.8 263.3 512 256 512s-16.6-3.2-27.8-13.8c-11.3-10.8-23-27.9-33.5-51.5zM135.3 352c10 63.9 29.8 117.4 55.3 151.6C112.2 482.9 48.6 426.1 18.6 352H135.3zm358.1 0c-30 74.1-93.6 130.9-171.9 151.6c25.5-34.2 45.2-87.7 55.3-151.6H493.4z"/></svg> Website](https://mathis-yannicopoulos.github.io/Individual-Assignment/Indvidual%20Assignment.html)
-- [<svg aria-hidden="true" role="img" viewBox="0 0 496 512" style="height:1em;width:0.97em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg> Repository](https://github.com/Mathis-Yannicopoulos/Individual-Assignment)
+# Python so far
 
----
+We have already seen how to:
 
-# Example of Student Submissions
+- **Use python** in Google Colab
+- **Install, load and use packages**
+- Run **code cells**
+- Use **keyboard shortcuts**: &lt;kbd&gt;Ctrl&lt;/kbd&gt; &amp; &lt;kbd&gt;Enter&lt;/kbd&gt; (Win) / &lt;kbd&gt;Command&lt;/kbd&gt; &amp; &lt;kbd&gt;Enter&lt;/kbd&gt; (Mac)
+- **Create object** with the `=` sign
+- **Upload and read data** in Google Colab
 
-&lt;iframe width="1000" height="450" src="https://leospagni.github.io/UNICEF/UNICEF_Quarto_Project/UNICEF_report"&gt;&lt;/iframe&gt;
+Now let's introduce Polars!
 
-- [<svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M352 256c0 22.2-1.2 43.6-3.3 64H163.3c-2.2-20.4-3.3-41.8-3.3-64s1.2-43.6 3.3-64H348.7c2.2 20.4 3.3 41.8 3.3 64zm28.8-64H503.9c5.3 20.5 8.1 41.9 8.1 64s-2.8 43.5-8.1 64H380.8c2.1-20.6 3.2-42 3.2-64s-1.1-43.4-3.2-64zm112.6-32H376.7c-10-63.9-29.8-117.4-55.3-151.6c78.3 20.7 142 77.5 171.9 151.6zm-149.1 0H167.7c6.1-36.4 15.5-68.6 27-94.7c10.5-23.6 22.2-40.7 33.5-51.5C239.4 3.2 248.7 0 256 0s16.6 3.2 27.8 13.8c11.3 10.8 23 27.9 33.5 51.5c11.6 26 20.9 58.2 27 94.7zm-209 0H18.6C48.6 85.9 112.2 29.1 190.6 8.4C165.1 42.6 145.3 96.1 135.3 160zM8.1 192H131.2c-2.1 20.6-3.2 42-3.2 64s1.1 43.4 3.2 64H8.1C2.8 299.5 0 278.1 0 256s2.8-43.5 8.1-64zM194.7 446.6c-11.6-26-20.9-58.2-27-94.6H344.3c-6.1 36.4-15.5 68.6-27 94.6c-10.5 23.6-22.2 40.7-33.5 51.5C272.6 508.8 263.3 512 256 512s-16.6-3.2-27.8-13.8c-11.3-10.8-23-27.9-33.5-51.5zM135.3 352c10 63.9 29.8 117.4 55.3 151.6C112.2 482.9 48.6 426.1 18.6 352H135.3zm358.1 0c-30 74.1-93.6 130.9-171.9 151.6c25.5-34.2 45.2-87.7 55.3-151.6H493.4z"/></svg> Website](https://leospagni.github.io/UNICEF/UNICEF_Quarto_Project/UNICEF_report)
-- [<svg aria-hidden="true" role="img" viewBox="0 0 496 512" style="height:1em;width:0.97em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg> Repository](https://github.com/leospagni/UNICEF/tree/main/UNICEF_Quarto_Project)
+&lt;img src="https://pola.rs/share.jpg" width="50%" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# Example of Student Submissions
+# Data Wrangling and Manipulation
 
-&lt;iframe width="1000" height="450" src="https://shanemarioantao.github.io/Assignment/project/Unicef.html"&gt;&lt;/iframe&gt;
+`pandas` is a powerful and widely used Python library for data manipulation and analysis. 
 
-- [<svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M352 256c0 22.2-1.2 43.6-3.3 64H163.3c-2.2-20.4-3.3-41.8-3.3-64s1.2-43.6 3.3-64H348.7c2.2 20.4 3.3 41.8 3.3 64zm28.8-64H503.9c5.3 20.5 8.1 41.9 8.1 64s-2.8 43.5-8.1 64H380.8c2.1-20.6 3.2-42 3.2-64s-1.1-43.4-3.2-64zm112.6-32H376.7c-10-63.9-29.8-117.4-55.3-151.6c78.3 20.7 142 77.5 171.9 151.6zm-149.1 0H167.7c6.1-36.4 15.5-68.6 27-94.7c10.5-23.6 22.2-40.7 33.5-51.5C239.4 3.2 248.7 0 256 0s16.6 3.2 27.8 13.8c11.3 10.8 23 27.9 33.5 51.5c11.6 26 20.9 58.2 27 94.7zm-209 0H18.6C48.6 85.9 112.2 29.1 190.6 8.4C165.1 42.6 145.3 96.1 135.3 160zM8.1 192H131.2c-2.1 20.6-3.2 42-3.2 64s1.1 43.4 3.2 64H8.1C2.8 299.5 0 278.1 0 256s2.8-43.5 8.1-64zM194.7 446.6c-11.6-26-20.9-58.2-27-94.6H344.3c-6.1 36.4-15.5 68.6-27 94.6c-10.5 23.6-22.2 40.7-33.5 51.5C272.6 508.8 263.3 512 256 512s-16.6-3.2-27.8-13.8c-11.3-10.8-23-27.9-33.5-51.5zM135.3 352c10 63.9 29.8 117.4 55.3 151.6C112.2 482.9 48.6 426.1 18.6 352H135.3zm358.1 0c-30 74.1-93.6 130.9-171.9 151.6c25.5-34.2 45.2-87.7 55.3-151.6H493.4z"/></svg> Website](https://shanemarioantao.github.io/Assignment/project/Unicef.html)
-- [<svg aria-hidden="true" role="img" viewBox="0 0 496 512" style="height:1em;width:0.97em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg> Repository](https://github.com/ShaneMarioAntao/Assignment/tree/main/project)
+It provides the DataFrame structure (two-dimensional) that allow to efficiently store, manipulate, and analyse structured data.
 
----
+It allows Data Manipulation like:
 
-# Python Introduction
+- Adding, deleting, and modifying columns and rows.
+- Merging, joining, and concatenating datasets.
+- Reshaping data with pivot tables and groupby operations.
+- Performing statistical and mathematical operations (mean, sum, count, etc.).
+- Grouping data using .groupby() for advanced aggregations.
 
-Modern data analytics uses free and open-source computer languages:
-
-* Proprietary languages (e.g., Matlab) and software (e.g., SPSS, Stata, SAS) are outdated
-* Python and R are the main open-source languages for data analytics
-
-While R is mostly used in academic research and public institutions, Python is, by far, the most used language in organisations.
-
-#### So let's use Python!
-
-&lt;img src="https://i.programmerhumor.io/2023/06/programmerhumor-io-python-memes-backend-memes-6e51e8ccc5a8207.jpg" width="30%" style="display: block; margin: auto;" /&gt;
-
-
----
-class: inverse, mline, center, middle
-
-# 1. Python and its IDE
+However, `pandas` not very nice to read or to write
 
 ---
 
-# What are Python and Python IDEs?
+# Data Wrangling and Manipulation
 
-There are some key concepts you need to understand and to remember:
+`polars` is a new project for DataFrame manipulation.
 
-* Python is the name of the language
-* Python can be coded in various types of interface also called Integrated Development Environment or IDE
+It is lightning fast and a bit more user friendly than `pandas`. 
 
-At its simplest, **Python is like a car’s engine** while **an IDE is like a car’s dashboard**.
-
-.pull-left[
-.center[Python: The engine]
-&lt;img src="https://raw.githubusercontent.com/damien-dupre/img/main/car_motor.jpeg" style="display: block; margin: auto;" /&gt;
-]
-
-.pull-right[
-.center[IDE: The dashboard]
-&lt;img src="https://raw.githubusercontent.com/damien-dupre/img/main/car_dashboard.jpeg" style="display: block; margin: auto;" /&gt;
-]
+&lt;img src="https://codecut.ai/wp-content/uploads/2024/07/pandas_vs_polars-1-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# What are Python and Python IDEs?
+# Data Wrangling with Polars
 
-In its default installation Python and your Python IDE have to be installed separately.
+There are five operations that you will use to do the vast majority of data manipulations:
 
-Therefore, you should first download and install Python: [https://www.python.org/](https://www.python.org/)
+- `Extension` i.e., Make new variables (create new variables with functions of existing variables)
 
-Then, download and install your Python IDE. Popular Python IDEs include:
+- `Reduction` i.e., Subset observations (pick observations by their values)
 
-- [PyCharm: feature-rich with intelligent code suggestions](https://www.jetbrains.com/pycharm/)
-- [VS Code: lightweight and highly customisable](https://code.visualstudio.com/)
-- [Spyder: designed for scientific computing](https://docs.spyder-ide.org/)
+- `Selection` i.e., Subset variables (pick variables by their names)
 
-Additionally, a software called [Anaconda](https://www.anaconda.com/download) proposes to install both for free:
+- `Aggregation` i.e., Summarise data (collapse many values down to a single summary)
 
-- It includes Conda, a package manager that simplifies installing, updating, and managing libraries, avoiding dependency conflicts often encountered with pip. 
-- It comes pre-installed with over 1,500 python libraries, such as NumPy, Pandas, Matplotlib, and TensorFlow, saving time and effort in setting up an environment.
+- `Combination` i.e., Merge two or more datasets using a common variable
 
 ---
 
-# Which IDE to Use?
+# Load polars
 
-&lt;img src="https://miro.medium.com/v2/resize:fit:1200/1*HmjIg5JOH3gXXCGX0JK95g.png" style="display: block; margin: auto;" /&gt;
-Source [<svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M352 256c0 22.2-1.2 43.6-3.3 64H163.3c-2.2-20.4-3.3-41.8-3.3-64s1.2-43.6 3.3-64H348.7c2.2 20.4 3.3 41.8 3.3 64zm28.8-64H503.9c5.3 20.5 8.1 41.9 8.1 64s-2.8 43.5-8.1 64H380.8c2.1-20.6 3.2-42 3.2-64s-1.1-43.4-3.2-64zm112.6-32H376.7c-10-63.9-29.8-117.4-55.3-151.6c78.3 20.7 142 77.5 171.9 151.6zm-149.1 0H167.7c6.1-36.4 15.5-68.6 27-94.7c10.5-23.6 22.2-40.7 33.5-51.5C239.4 3.2 248.7 0 256 0s16.6 3.2 27.8 13.8c11.3 10.8 23 27.9 33.5 51.5c11.6 26 20.9 58.2 27 94.7zm-209 0H18.6C48.6 85.9 112.2 29.1 190.6 8.4C165.1 42.6 145.3 96.1 135.3 160zM8.1 192H131.2c-2.1 20.6-3.2 42-3.2 64s1.1 43.4 3.2 64H8.1C2.8 299.5 0 278.1 0 256s2.8-43.5 8.1-64zM194.7 446.6c-11.6-26-20.9-58.2-27-94.6H344.3c-6.1 36.4-15.5 68.6-27 94.6c-10.5 23.6-22.2 40.7-33.5 51.5C272.6 508.8 263.3 512 256 512s-16.6-3.2-27.8-13.8c-11.3-10.8-23-27.9-33.5-51.5zM135.3 352c10 63.9 29.8 117.4 55.3 151.6C112.2 482.9 48.6 426.1 18.6 352H135.3zm358.1 0c-30 74.1-93.6 130.9-171.9 151.6c25.5-34.2 45.2-87.7 55.3-151.6H493.4z"/></svg> Stackoverflow Survey 2024](https://survey.stackoverflow.co/2024/technology#3-integrated-development-environment)
-
----
-
-# What are Python and Python IDEs?
-
-While VS Code is the most used IDE, it is worth to mention the existence of [Jupyter Notebook](https://jupyter.org/).
-
-It offers a simple but interactive interface that allows you to write Python code, test it, and see the result below the instruction rather than in a separate console.
-
-It allows to combine text in Markdown format (a lighter markup text format than HTML), Python code, and HTML code for visualizations and animations in a single document.
-
-&lt;img src="https://python.sdv.u-paris.fr/img/jupyter-exemple.png" style="display: block; margin: auto;" /&gt;
-
-However, we are not going to use any of these solutions...
-
----
-class: clear
-
-## .center[**Time to enter ...**]
-
---
-
-&lt;img src="https://raw.githubusercontent.com/damien-dupre/img/main/the_matrix.gif" width="150%" style="display: block; margin: auto;" /&gt;
-
----
-
-# Google Colab
-
-Instead, we are going to use Google Colab!
-
-This solution has several advantages, particularly for users who want a hassle-free, cloud-based solution without worrying about local installation or hardware limitations.
-
-It is entirely cloud-based, meaning there is no need to install or configure anything on your local machine.
-
-Try it here: [https://colab.research.google.com/](https://colab.research.google.com/)
-
-&lt;img src="https://algotrading101.com/learn/wp-content/uploads/2021/05/Google-Colab-Guide-e1620759490851.jpg" width="50%" style="display: block; margin: auto;" /&gt;
-
----
-
-# Code in Google Colab
-
-Most of the python code displayed in this lecture is included in these slides. Rather than typing it manually, open these slides in another tab to copy-paste the code
-
-Two ways to access these slides:
-
-  - From Loop: Lectures &gt; Lecture 7
-  - Or from the URL: https://damien-dupre.github.io/BAA1030/lectures/lecture_7
-
-&lt;img src="https://c.tenor.com/0heitU7-tg4AAAAC/copy-paste-paste.gif" width="50%" style="display: block; margin: auto;" /&gt;
-
----
-class: inverse, mline, center, middle
-
-# 2. Coding in Google Colab
-
----
-
-# Google Colab
-
-When you create a new project, you will launch Rstudio see the following 3 windows (also called panes):
-
-* **Console**: where the results are printed
-* **Variable Environment**: where the objects are stored
-* **Notebook**: where the code should be typed and saved
-
-&lt;img src="https://hutchdatascience.org/Intro_to_Python/images/colab.png" width="60%" style="display: block; margin: auto;" /&gt;
-
----
-
-# Google Colab
-
-## Python Console
-
-Open it via `View` -&gt; `Executed` code history. 
-
-You give it one line of Python code, and the console executes that single line of code; you give it a single piece of instruction, and it executes it for you.
-
-## Notebook
-
-In the central panel of the website, you will see Python code interspersed with word document text. 
-
-This is called a Python Notebook (other similar services include Jupyter Notebook, iPython Notebook), which has chunks of plain text and Python code, and it helps us understand better the code we are writing.
-
----
-
-# Variable Environment
-
-.pull-left[
-Open it by clicking on the &lt;kbd&gt;{x}&lt;/kbd&gt; button on the left-hand panel. 
-
-Often, your code will store information in the Variable Environment, so that information can be reused. 
-For instance, we often load in data and store it in the Variable Environment, and use it throughout rest of your Python code.
-
-Note that I will mention the `Terminal` in the lecture. In Google Colab, the terminal can only be accessed if you pay for Google Colab Pro. 
-
-However, this is something that we won't do and we will find free alternative to use the `Terminal` in Google Colab.
-]
-
-.pull-right[
-&lt;img src="https://www.jcchouinard.com/wp-content/uploads/2022/06/image-46.png" style="display: block; margin: auto;" /&gt;
-]
-
----
-class: title-slide, middle
-
-## Exercise
-
-The first thing we will do is see the different ways we can run Python code. 
-
-- In the Python Notebook, create chunk of Python Code with `2+2`.
-
-- Then, click the arrow button ▶️ to run the code.
-
-<div class="countdown" id="timer_fc79e861" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
-<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
-</div>
-
----
-
-# Running Python Code
-
-In addition to the code cell, you can use the Python Console too.
-
-Type something into the Python Console (Execution) and click the arrow button, such as `2+2`. The Python Console will run it and give you an output.
-
-A very useful trick is to run every single Python code chunk via `Runtime` -&gt; `Run all`.
-
-Remember that **the order that you run your code matters** in programming. Your final product would be the result of Option 3, in which you run every Python code chunk from start to finish. However, sometimes it is nice to try out smaller parts of your code via Options 1 or 2. But you will be at risk of running your code out of order!
-
----
-
-# New Code Chunks
-
-To create your own content in the notebook, click on a section you want to insert content, and then click on &lt;kbd&gt;+ Code&lt;/kbd&gt; or &lt;kbd&gt;+ Text&lt;/kbd&gt; to add Python code or text, respectively.
-
-Python Notebook is great for data science work, because:
-
-- It encourages reproducible data analysis, when you run your analysis from start to finish.
-- It encourages excellent documentation, as you can have code, output from code, and prose combined together.
-
-The version of Python used in this course and in Google Colab is Python 3, which is the version of Python that is most supported.
-
-Now, we will get to the basics of programming grammar.
-
----
-class: inverse, mline, center, middle
-
-# 3. The Basics of python Code
-
----
-
-# What are .py and .ipynb files?
-
-**.py** is the extension for a python script (document including only python code)
-
-**.ipynb** is the extension for a i-python notebook documents which are used by Jupyter or Google Colab. 
-
-These notebooks mixes code cells (or code chunks) and markdown cells (basically text)
-
-## How to Run Python Code?
-
-In a Python notebook, click on the play arrow next to the code cell or:
-- Press &lt;kbd&gt;Ctrl&lt;/kbd&gt; &amp; &lt;kbd&gt;Enter&lt;/kbd&gt; (Win)
-- Press &lt;kbd&gt;command&lt;/kbd&gt; &amp; &lt;kbd&gt;Enter&lt;/kbd&gt; (Mac)
-
-&lt;img src="https://amitness.com/posts/images/colab-cell-hover.png" style="display: block; margin: auto;" /&gt;
-
----
-
-# How to Run Python Code?
-
-Inside a code cell, every character will be read as python code excepts if after a `#` which is used for comments.
-
-Example of non-active code:
+To load the polars package:
 
 
 ``` python
-# non active code for comments
+import polars as pl
 ```
 
-Example of active code:
+In the following code inside these slides:
+
+- `pl` is the acronym to call functions from the package
+- `pl.col("variable name")` will access the specific `variable` 
+
+---
+
+# The gapminder dataset
+
+The dataset used today is called `gapminder`. 
+
+Each row corresponds to a country at a specific year. For each row, we have 6 columns:
+
+- **country**: Name of country.
+- **year**: Year of the observation (between 1952 and 2007).
+- **pop**: Number of people living in the country.
+- **continent**: Which of the five continents the country is part of. 
+- **lifeExp**: Life expectancy in years.
+- **gdpPercap**: Gross domestic product (in US dollars).
+
+to use the `gapminder` dataset, use the function `pl.read_csv` on the url:
+
+&gt; https://raw.githubusercontent.com/damien-dupre/damien-dupre.github.io/refs/heads/main/gapminder.csv
 
 
 ``` python
-print("active", "code")
-```
-
-```
-## active code
-```
-
-``` python
-1 + 1 ## everything after `#` is non active and is used for comments
-```
-
-```
-## 2
+gapminder = pl.read_csv("https://raw.githubusercontent.com/damien-dupre/damien-dupre.github.io/refs/heads/main/gapminder.csv")
 ```
 
 ---
 
-# What are python packages/libaries?
-
-Python packages extend the functionality of python. They are written by a worldwide community of python users and can be downloaded for free from the internet.
-
-A good analogy for **python packages are like apps you can download onto a mobile phone**.
+# The polars Syntax
 
 .pull-left[
-.center[Python: A new phone]
-&lt;img src="https://raw.githubusercontent.com/damien-dupre/img/main/phone_design.jpeg" width="100%" style="display: block; margin: auto;" /&gt;
-]
+The following code displays the 5 first rows with the `head()` function:
 
-.pull-right[
-.center[Packages/Libaries: Apps you can download]
-&lt;img src="https://raw.githubusercontent.com/damien-dupre/img/main/phone_apps.jpeg" width="100%" style="display: block; margin: auto;" /&gt;
-]
 
----
-
-# What are python packages/libaries?
-
-Say you have purchased a new phone, to use Instagram you need to **install the app once** and to **open the app** every time you want to use it. The process is very similar for using an python package. You need to:
-
-#### 1. Install the package/library
-.pull-left[
-From the terminal using:
-
-``` bash
-pip install praise
+``` python
+gapminder.head(5)
 ```
 ]
 
 .pull-right[
-Or, in a Google Colab code cell using:
+You can create a new object with the `=` assignment symbol and print it out:
+
 
 ``` python
-!pip install praise
+gapminder_short = gapminder.head(5)
+gapminder_short
 ```
 ]
 
-#### 2. “Load” the package with the relevant function using `from` and `import`
+However, instead of the classic style, we will use a Polars syntax using `(` as first character and `)` as last character, and spreading the code over multiple lines:
 
-
-``` python
-from praise import praise
-```
-
-Note: Here, `praise` is the name of the package/library and `praise` is also the name of a function contained in the package/library.
-
-#### 3. Once the package is loaded, you can use the function `praise()` from this package such as:
-
+.pull-left[
 
 ``` python
-praise()
+(gapminder
+  .head(5)
+)
 ```
+]
+
+.pull-right[
+
+``` python
+gapminder_short = (gapminder
+  .head(5)
+)
+```
+]
+
+This way looks longer but it will be very useful to chain different transformations!
 
 ---
 
-# What are python packages/libaries?
+# Method Chaining
 
-In order to load all the functions contained in a package/library, it can be called using an explicit alias using `import` and `as`:
+Many people don't need to be told why method chaining is nice. Many languages make it easy to write
+`thing.min().abs().str()` instead of `str(abs(min(thing)))`.
 
+It's not always easy for libraries to accommodate method chaining - in fancy terms, to be [fluent interfaces](https://en.wikipedia.org/wiki/Fluent_interface). Even Pandas used to be much less fluent:
+when *Modern Pandas* was released, methods like `assign` and `pipe` were quite recent.
 
-``` python
-import praise as pr
-```
-
-Then functions can be used using the alias as prefix:
-
-
-``` python
-pr.praise()
-```
-
-With the time, alias conventions have been created for popular packages/libraries:
+Fortunately Polars is very fluent and can be read easily using Method Chaining.
 
 
 ``` python
-import numpy as np
-import pandas as pd
-import math as m
-import matplotlib.pyplot as plt
+(gapminder
+  .with_columns(gdp_total = pl.col("pop") * pl.col("gdpPercap"))
+  .select(
+    pl.col("gdp_total"),
+    pl.col("year").alias("measure_year"),
+    pl.col("pop").alias("total_pop")
+  )
+  .group_by(pl.col("measure_year"))
+  .agg(pl.col("gdp_total").mean().alias("gdp_total_average"))
+)
 ```
 
 ---
@@ -455,188 +244,79 @@ class: title-slide, middle
 
 ## Exercise
 
-Open an New Notebook in Google Colab. 
+1/ Load Polars:
 
-In this document:
-- Create a 1st code cell to **install the package "praise"**
 
 ``` python
-!pip install praise
+import polars as pl
 ```
-- Create a 2nd code cell to **load the library praise** and the function **praise()**
+
+2/ Create a `gapminder` object using the `polars` function `read_csv`:
+
 
 ``` python
-from praise import praise
+gapminder = pl.read_csv("https://raw.githubusercontent.com/damien-dupre/damien-dupre.github.io/refs/heads/main/gapminder.csv")
 ```
--  Create a 3rd code cell to **run the function `praise()`** as it is, without arguments
+
+3/ Use the function `head()` on the gapminder object
+
 
 ``` python
-praise()
+gapminder.head(5)
 ```
 
-<div class="countdown" id="timer_3eea00e6" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown" id="timer_4c313ac7" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
 ---
+class: inverse, mline, center, middle
 
-# Calling Functions
-
-Functions are algorithms (or lines of code) which **transform data to something else**. For example, the function `praise()`, without arguments, prints a random message.
- 
-Functions have **a name** and **several parameters or arguments** that require some information.
-
-
-``` python
-function_name(argument_1=value_1, argument_2=value_2, ...)
-```
-
-<span>&lt;i class="fas  fa-exclamation-triangle faa-flash animated faa-slow " style=" color:red;"&gt;&lt;/i&gt;</span> However, arguments are usually matched by position without explicitly calling them:
-
-
-``` python
-function_name(value_1, value_2, ...)
-```
+# 1. The select() function
 
 ---
 
-# Calling Functions
+# The select() function
 
-For example, the function `arange()` (read "A-range" for array range) from the package `numpy` makes a sequences of numbers:
-* The first argument `from` is the number starting the sequence
-* The second argument `to` is last number of the sequence
+It is not uncommon to get datasets with hundreds or even thousands of variables. In this case, the first challenge is often **narrowing in on the variables** you are actually interested in. 
+
+`select()` allows you to rapidly zoom in on a **useful subset** using operations based on the names of the variables. 
+
+Again the first argument is the name of the **data frame** object to process and the following arguments are the **name of the columns to keep**.
 
 
 ``` python
-import numpy as np
-np.arange(0, 10)
+(gapminder
+  .select(
+    pl.col("country"),
+    pl.col("year"),
+    pl.col("pop")
+  )
+)
 ```
 
-```
-## array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-```
+<span>&lt;i class="fas  fa-exclamation-triangle faa-flash animated faa-slow " style=" color:red;"&gt;&lt;/i&gt;</span> Importantly, **Column/Variable names explicitly mentioned** with Polars using the function `pl.col()`
 
 ---
 
-# Calling Functions
+# Select and rename variables
 
-However, the function `arange()` has many more arguments, for example
+While you are keeping only specify variables with `select()`, these variables can also be renamed on the same time. 
 
+The function `alias()` with the **new name** overwrite the **old name**.
 
-``` python
-np.arange(0, 10, dtype=float)
-```
-
-```
-## array([0., 1., 2., 3., 4., 5., 6., 7., 8., 9.])
-```
-
-Note: These are fundamental types used in lists, tuples, and other structures:
-- Integer (**int**) – Whole numbers (e.g., 1, 2, -5)
-- Floating-Point (**float**) – Decimal numbers (e.g., 3.14, -0.001)
-- String (**str**) – Text data (e.g., "hello", 'Python')
-- Boolean (**bool**) – True or False values (True, False)
-
----
-
-# Assign Values to Objects
-
-An object is a box that **can include anything** (e.g., values, dataframes, figures, models, functions, ...) and **has a name** that you have to choose. 
-
-To create an object, you need to **assign something** to a name using the `=` operator. 
+Example:
 
 
 ``` python
-x = 4
-```
-
-If you type the name of the object, python will print out its content.
-
-
-``` python
-x
-```
-
-```
-## 4
-```
-
-Then, you can use this object further in your code:
-
-
-``` python
-np.arange(x, 10)
-```
-
-```
-## array([4, 5, 6, 7, 8, 9])
-```
-
----
-
-# Assign Values to Objects
-
-It is very important to distinguish values and objects in python:
-
-&lt;table&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt; Type &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; Class &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; Example &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Integer (int) &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Numeric Value &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 1, 2, ... &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Floating-Point (float)) &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Decimal Value &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 1.1, 2.8, ... &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; String (str) &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Character Value &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; "one", "two", ... &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Word without quotes &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Object Name &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; function name, data name, ... &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-These, types of values are then stored in different objects:
-
-&lt;img src="https://nustat.github.io/DataScience_Intro_python/Datasets/numpy_image.png" width="100%" style="display: block; margin: auto;" /&gt;
-
----
-
-# Different Objects
-
-All object assignments have the same form:
-
-
-``` python
-object_name = object_content
-```
-
-You want your object names to be descriptive, so you will need a convention for multiple words. I recommend **snake_case** where you separate lower-case words with `_`.
-
-
-``` python
-numeric_value = 1
-
-character_value = "one"
-
-list_with_numeric_values = [1, 2]
-
-list_with_character_values = ["one", "two"]
+(gapminder
+  .select(
+    pl.col("country"),
+    pl.col("year").alias("measure_year"),
+    pl.col("pop").alias("total_pop")
+  )
+)
 ```
 
 ---
@@ -649,187 +329,388 @@ class: title-slide, middle
 
 ## Exercise
 
-In the same python code chunk in google colab, **Copy, Paste, and Run** the following code:
+From the data frame object `gapminder`, select the columns `lifeExp` and `gdpPercap` and rename them as life_expectancy and gdp_per_capita:
 
 
 ``` python
-import matplotlib.pyplot as plt
-
-# Data
-my_power = [0.5, 99.5]
-my_knowledge = ["without python", "with python"]
-
-# Create bar plot
-plt.bar(my_knowledge, my_power)
-
-# Add labels
-plt.xlabel("Knowledge Level")
-plt.ylabel("Power (%)")
-plt.title("Bar Plot Example")
-
-# Show plot
-plt.show()
+(gapminder
+  .select(
+    __.___(____).____(_____),
+    __.___(____).____(_____)
+  )
+)
 ```
 
-<div class="countdown" id="timer_e9000790" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
-<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
-</div>
-
----
-class: inverse, mline, center, middle
-
-# 4. Access Data in Google Colab
-
----
-
-# Open your Data as python Object (1)
-
-Google Colab is a free remote computer, the computing is not run on your computer.
-
-To open Data on Google Colab, you first need to `Upload` your file on this computer and to `read` the data in python.
-
-.pull-left[
-.center[Step 1: Upload your File]
-&lt;img src="https://miro.medium.com/v2/resize:fit:1400/1*eLs1D3BI4_HLAabN5WUTPg.png" style="display: block; margin: auto;" /&gt;
-]
-
-.pull-right[
-.center[Step 2: Read your File with Pandas]
-&lt;img src="https://miro.medium.com/v2/resize:fit:1400/1*EwbRL6__lKav4sKfjS8Ktw.png" style="display: block; margin: auto;" /&gt;
-]
-
----
-
-# Open your Data as python Object (2)
-
-Once you have uploaded your data file from your computer to this free cloud computer, you can read it using the function `read_csv` in the `pandas` package/library. 
-
-The only argument expected is the path to the upload file which can be obtained with a left/double click on the file.
-
-The result of the `read_csv` has to be saved in an object and you can print this object by running its name.
-
-
-``` python
-import pandas as pd
-
-df = pd.read_csv("/content/titanic.csv")
-
-df
-```
-
----
-
-# Open your Data as python Object (3)
-
-If you use python on your own computer, file paths are different according to your Operating System:
-
-
-``` python
-# Windows
-my_file_object = pd.read_csv("C:/path/to/my/file.csv")
-
-# Macos
-my_file_object = pd.read_csv("/Users/path/to/my/file.csv")
-```
-
-The following codes will generate an error:
-
-
-``` python
-# Incomplete path
-my_file_object = pd.read_csv("/path/to/my/file.csv")
-# Missing file extension
-my_file_object = pd.read_csv("C:/path/to/my/file")
-# Use of backward slash
-my_file_object = pd.read_csv("C:\path\to\my\file.csv")
-```
-
----
-class: title-slide, middle
-
-## Live Demo
-
----
-class: title-slide, middle
-
-## Exercise
-
-1. Click on `Upload` to upload your "unicef_metadata.csv" file on your Google Colab
-
-2. Use the function `read_csv` in the `pandas` package/library to read the file.
-
-<div class="countdown" id="timer_89e138f3" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
-<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
-</div>
-
----
-class: inverse, mline, center, middle
-
-# 5. Save Your Notebook
-
----
-
-# Save Your Notebook
-
-Your data file will be removed from Google Colab as soon as you close the tab. However, that's ok we can upload it and use it again every time we come back to the Notebook.
-
-What is important to save is your Notebook with the code your wrote. 
-
-By clicking on `File` &gt; `Save`, you will save it on your Google Drive. A new folder called "Colab Notebooks" will be created and all your Notebooks saved in this folder.
-
----
-class: title-slide, middle
-
-## Exercise
-
-Save the Notebook you were working on and find it in your google drive.
-
-<div class="countdown" id="timer_e2ee2393" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown" id="timer_3698ecff" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
 ---
+class: inverse, mline, center, middle
 
-# Become Expert in Python
-
-Because Python is free, plenty of free learning materials are available online, on Youtube or Tik Tok
-
-Social networks like LinkedIn or X, and content aggregators like Medium or Towards Data Science, offer posts of varying quality. The site [Real Python](https://realpython.com/) generally provides very good posts, comprehensive and educational.
-  
-Many free online books are also listed in the [Big Book of Python](https://www.bigbookofpython.com/)
-
-There are well-crafted newsletters for regularly tracking developments in the data science ecosystem. For me, they are the primary source of fresh information.
-- If you had to subscribe to only one newsletter, the most important to follow is Andrew Ng's, &lt;a href="https://www.deeplearning.ai/the-batch/"&gt;&lt;em&gt;"The Batch"&lt;/em&gt;&lt;/a&gt;. 
-- General newsletters from &lt;a href="https://dataelixir.com/"&gt;&lt;em&gt;Data Elixir&lt;/em&gt;&lt;/a&gt; and &lt;a href="https://alphasignal.ai/"&gt;Alpha Signal&lt;/a&gt; keep you updated with the latest news. 
-- In the field of data visualization, newsletters from &lt;a href="https://blog.datawrapper.de/newsletter/"&gt;&lt;em&gt;DataWrapper&lt;/em&gt;&lt;/a&gt; provide accessible content on the subject.
+# 2. The filter() function
 
 ---
 
-# How to solve errors
+# The filter() function
+
+You will want to isolate bits of your data; maybe you want to only look at a single country or a few years. Polars calls this subsetting and `filter()` allows you to **subset observations based on their values**.
+
+`filter()`'s transformation is a conditional statement, only observations TRUE to the condition are kept.
+
+For example:
+
+
+``` python
+(gapminder
+  .filter(pl.col("country") == "Ireland")
+)
+```
+
+- A Column/Variable is an array containing multiple values inside the data frame object.
+- The string "Ireland" does not exist in our environment and will not be saved. It is here just as a value, which explains the quotation marks.
+
+---
+
+# Comparisons
+
+To use filtering effectively, you have to know how to select the observations that you want using the **comparison operators**. Python provides the standard suite: `&gt;`, `&gt;=`, `&lt;`, `&lt;=`, `!=` (not equal), and `==` (exactly equal).
+
+When you are starting out with python, the **easiest mistake to make** is to use `=` instead of `==` when testing for equality. When this happens you will get an informative error:
+
+
+``` python
+(gapminder
+  .filter(pl.col("country") = "Ireland")
+)
+```
+
+<span>&lt;i class="fas  fa-exclamation-triangle faa-flash animated faa-slow " style=" color:red;"&gt;&lt;/i&gt;</span> The single equal sign `=` is only to assign values to argument in functions whereas the double equal sign `==` checks for equality (use the "exactly equal" term to remember).
+
+---
+
+# Multiple filters and multipe values
+
+Multiple can be filtered using specific variables like `is_in([])` or `is_between()`.
+
+Multiple filters can be added one after the other, separated with a comma.
+
+
+``` python
+(gapminder
+  .filter(
+    pl.col("country").is_in(["Germany", "United States"]),
+    pl.col("year").is_between(2000, 2007)
+  )
+)
+```
+
+---
+class: title-slide, middle
+
+## Live Demo
+
+---
+class: title-slide, middle
+
+## Exercise
+
+1/ Be sure that the packages `polars` is loaded
+
+2/ Be sure that the object `gapminder` is created
+
+3/ Create a new object that only contains data for France
+
+
+``` python
+_____ = (_____
+  .filter(__.___("country") == ______)
+)
+```
+
+4/ Create a new object using the previous object that only contains data for France in 1982
+
+<div class="countdown" id="timer_80fe512f" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+class: inverse, mline, center, middle
+
+# 3. The with_columns() function
+
+---
+
+# The with_columns() function
+
+Besides selecting sets of existing columns, it is often useful to **add new columns** that are functions of existing columns. That is the job of `with_columns()`.  
+
+Once again the first element is the **name of the data frame** object to modify, then the second element is `with_columns()`. Inside `with_columns()`, the name of the new variable is followed by the `=` sign and the **condition creating the new values**.
+
+For example we can create a new column called `gdp_total` which contains the values resulting from the multiplication between `pop` and `gdpPercap`:
+
+
+``` python
+(gapminder
+  .with_columns(gdp_total = pl.col("pop") * pl.col("gdpPercap"))
+)
+```
+
+`with_columns()` can also create multiple columns in the same statement, they just have to be separated by a comma `,`.
+
+---
+class: title-slide, middle
+
+## Live Demo
+
+---
+class: title-slide, middle
+
+## Exercise
+
+From the data frame object `gapminder`, create a new column called `country_upper` with the function `.str.to_uppercase()` on the column `country`:
+
+
+``` python
+____ = (____
+  .____(____ = __.____("____")._____)
+)
+```
+
+<div class="countdown" id="timer_29848c68" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+class: inverse, mline, center, middle
+
+# 4. The group_by() and agg() functions
+
+---
+
+# Summarise your data
+
+You can summarise your data with the function `len()`, `sum()`, `mean()`, `std()`, `median()` when selecting variables.
+
+For example, if we applied exactly the same code to a data frame, we get the average population per observation:
+
+
+``` python
+(gapminder
+  .select(pl.col("pop").mean())
+)
+```
+
+This summary can be renamed for transparency:
+
+
+``` python
+(gapminder
+  .select(pl.col("pop").mean().alias("pop_average"))
+)
+```
+
+---
+
+# The group_by() and agg() functions
+
+Summarising is not terribly useful **unless done for multiple groups** with `group_by()` and `agg()`. 
+
+For example, if we applied exactly the same code to a data frame **grouped by year**, we get the average world population per year:
+
+
+``` python
+(gapminder
+  .group_by(pl.col("year"))
+  .agg(pl.col("pop").mean().alias("pop_average"))
+)
+```
+
+---
+class: title-slide, middle
+
+## Live Demo
+
+---
+class: title-slide, middle
+
+## Exercise
+
+1/ From the data frame object `gapminder`, summarise the population average with the `mean()` function by `year` and by `continent` by adding the second grouping variable after the first one (use a coma to separate them):
+
+
+``` python
+(gapminder
+  .group_by(
+    pl.col("year"),
+    __.___("_________")
+    )
+  .agg(pl.col("pop").mean().alias("pop_average"))
+)
+```
+
+2/ From the data frame object `gapminder`, summarise the population standard deviation with the `std()` function by `year` and by `continent` by adding the second grouping variable after the first one (use a coma to separate them).
+
+<div class="countdown" id="timer_90a0083d" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+class: inverse, mline, center, middle
+
+# 5. More complex operations
+
+---
+
+# More complex operations
+
+Functions can be chained to create more complex queries according to your needs. In the example below we combine some of the contexts we have seen so far to create a more complex query:
+
+
+``` python
+(gapminder
+  .with_columns(gdp_total = pl.col("pop") * pl.col("gdpPercap"))
+  .select(
+    pl.col("gdp_total"),
+    pl.col("year").alias("measure_year"),
+    pl.col("pop").alias("total_pop")
+    )
+  .group_by(pl.col("measure_year"))
+  .agg(pl.col("gdp_total").mean().alias("gdp_total_average"))
+)
+```
+
+---
+class: title-slide, middle
+
+## Live Demo
+
+---
+class: title-slide, middle
+
+## Exercise
+
+1/ From the data frame object `gapminder`, summarise the sum of the worldwide population by `year`
+
+2/ From the data frame object `gapminder`, summarise the lifeExp average with the `mean()` function by `year` and by `continent`
+
+<div class="countdown" id="timer_4c2d3b84" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+class: inverse, mline, center, middle
+
+# 6. The join() functions
+
+---
+
+# Join 2 Tables
 
 .pull-left[
-#### 1. Look at your error
-* If it's obvious, solve it by yourself
-* If it's not obvious, paste the error in Google
-  
-#### 2. Code assistant AIs 
-* ChatGPT, Github Copilot, or any other can be very helpful
-* Provide them with the code + error
+The principle is simple, two different tables are sharing a **key variable**. By joining these two table by this key variable, it is possible to merge them into one table and to keep all variables.
 
-#### 3. Look at the function
-* Documentation available online
+However, there are different cases, imagine that your X table (on the left) has more observations on the key variable than the Y table (on the right)
 
-#### 4. Look at the web
-* Google "python how to ..."
-* Stack Overflow
 ]
 
 .pull-right[
-&lt;img src="https://media.makeameme.org/created/me-when-i-99d07768c9.jpg" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="https://raw.githubusercontent.com/gadenbuie/tidyexplain/master/images/static/png/original-dfs.png" width="100%" style="display: block; margin: auto;" /&gt;
 ]
+
+You might want to keep:
+- Only the observations included in the left table
+- Only the observations included in the right table
+- Only the observations included in both tables
+- All observations
+
+For more visualisation see [Tidy Animated Verbs](https://www.garrickadenbuie.com/project/tidyexplain/)
+
+---
+
+# Join 2 Tables with Same Index Name
+
+Create 2 dataframe objects sharing 2 key variables: country and year
+
+
+``` python
+table_1 = (gapminder
+  .select(pl.col("country"), pl.col("year"), pl.col("pop"))
+)
+table_2 = (gapminder
+  .select(pl.col("country"), pl.col("year"), pl.col("lifeExp"))
+)
+```
+
+Different possibilities to automatically join the dataframe objects
+
+
+``` r
+table_right_joined = (table_1
+  .join(table_2, on = "country", how = "right")
+)
+```
+
+`how` can be left, right, inner, or full.
+
+Set the argument `on` to manually choose multiple key variables, example:
+
+
+``` python
+table_full_joined = (table_1
+  .join(table_2, on = ["country", "year"], how = "full")
+)
+```
+
+---
+
+# Join 2 Tables with Different Index Name
+
+Sometimes the name of the variable index used to match the two tables is different, in this case it is necessary to __manually specify the matching variables__.
+
+
+``` python
+table_1 = (gapminder
+  .select(pl.col("country"), pl.col("year"), pl.col("pop"))
+)
+table_2 = (gapminder
+  .select(
+    pl.col("country").alias("country_measure"),
+    pl.col("year").alias("year_measure"),
+    pl.col("lifeExp"))
+)
+```
+
+Set the argument `by` to manually choose the key variables, and specify the association:
+
+
+``` python
+(table_1
+  .join(
+    table_2, 
+    left_on = ["country", "year"],
+    right_on = ["country_measure", "year_measure"]
+  )
+)
+```
+
+---
+
+# References
+
+Here is a list of very useful documents to get further:
+
+- [Polars official user guide](https://docs.pola.rs/)
+- [Modern Polars - A side-by-side comparison of the Polars and Pandas libraries](https://kevinheavey.github.io/modern-polars/)
+- [Polars - A Refreshingly Great DataFrame Library](https://blog.londogard.com/posts/2022-11-30-why-polars.html)
+- [(Pretty) big data wrangling with DuckDB and Polars](https://grantmcdermott.com/duckdb-polars/slides/slides.html)
+- [DataFrames on steroids with Polars](https://mint.westdri.ca/python/wb_polars_slides)
 
 ---
 
@@ -860,9 +741,9 @@ class: inverse, mline, left, middle
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script src="libs/cols_macro.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "zenburn",
-"highlightLines": true,
-"countIncrementalSlides": false
+  "highlightStyle": "zenburn",
+  "highlightLines": true,
+  "countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));

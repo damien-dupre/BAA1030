@@ -1,6 +1,6 @@
 ---
 title: "BAA1030 - Data Analytics and Story Telling"
-subtitle: "Lecture 7: Introduction to Python"
+subtitle: "Lecture 7: Data Wrangling with Polars"
 author: "Damien Dupré - Dublin City University"
 output:
   xaringan::moon_reader:
@@ -11,11 +11,7 @@ output:
       highlightStyle: zenburn
       highlightLines: true
       countIncrementalSlides: false
-      
-params:
-  module_code: "BAA1030"
-  lecture_number: "7"
 ---
 
-```{r child = '/Users/damienhome/Drive/Projects/lectures/python/introduction.Rmd'}
+```{r child = '/Users/damienhome/Drive/Projects/lectures/python/wrangling.Rmd'}
 ```
