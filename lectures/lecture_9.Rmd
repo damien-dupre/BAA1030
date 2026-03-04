@@ -1,7 +1,8 @@
 ---
 title: "BAA1030 - Data Analytics and Story Telling"
-subtitle: "Lecture 9: Visualisation in python with plotnine"
-author: "Damien Dupré - Dublin City University"
+subtitle: "Lecture 9: Introduction to Quarto"
+author: "Damien Dupré"
+date: "Dublin City University"
 output:
   xaringan::moon_reader:
     css: ["default", "metropolis", "metropolis-fonts", "css/custom_design.css"]
@@ -11,11 +12,7 @@ output:
       highlightStyle: zenburn
       highlightLines: true
       countIncrementalSlides: false
-      
-params:
-  module_code: "BAA1030"
-  lecture_number: "9"
 ---
 
-```{r child = '/Users/damienhome/Drive/Projects/lectures/python/plotnine.Rmd'}
+```{r child = '/Users/damienhome/Drive/Projects/lectures/python/quarto.Rmd'}
 ```
