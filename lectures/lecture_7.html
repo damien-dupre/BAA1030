@@ -85,7 +85,7 @@ Now let's introduce Polars!
 
 `pandas` is a powerful and widely used Python library for data manipulation and analysis. 
 
-It provides the DataFrame structure (two-dimensional) that allow to efficiently store, manipulate, and analyse structured data.
+It provides the DataFrame structure (two-dimensional) that allows you to efficiently store, manipulate, and analyse structured data.
 
 It allows Data Manipulation like:
 
@@ -95,7 +95,7 @@ It allows Data Manipulation like:
 - Performing statistical and mathematical operations (mean, sum, count, etc.).
 - Grouping data using .groupby() for advanced aggregations.
 
-However, `pandas` not very nice to read or to write
+However, `pandas` is not very nice to read or to write.
 
 ---
 
@@ -255,7 +255,7 @@ import polars as pl
 
 
 ``` python
-gapminder = pl.read_csv("https://raw.githubusercontent.com/damien-dupre/damien-dupre.github.io/refs/heads/main/gapminder.csv")
+gapminder = pl.read_csv("https://raw.githubusercontent.com/damien-dupre/data/refs/heads/master/gapminder.csv")
 ```
 
 3/ Use the function `head()` on the gapminder object
@@ -265,7 +265,7 @@ gapminder = pl.read_csv("https://raw.githubusercontent.com/damien-dupre/damien-d
 gapminder.head(5)
 ```
 
-<div class="countdown" id="timer_bf8233f8" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown" id="timer_6f33b6cc" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -296,13 +296,13 @@ Again the first argument is the name of the **data frame** object to process and
 )
 ```
 
-<span>&lt;i class="fas  fa-exclamation-triangle faa-flash animated faa-slow " style=" color:red;"&gt;&lt;/i&gt;</span> Importantly, **Column/Variable names explicitly mentioned** with Polars using the function `pl.col()`
+<span>&lt;i class="fas  fa-exclamation-triangle faa-flash animated faa-slow " style=" color:red;"&gt;&lt;/i&gt;</span> Importantly, **column/variable names must be explicitly referenced** in Polars using the function `pl.col()`.
 
 ---
 
 # Select and rename variables
 
-While you are keeping only specify variables with `select()`, these variables can also be renamed on the same time. 
+While you are keeping only specific variables with `select()`, these variables can also be renamed at the same time. 
 
 The function `alias()` with the **new name** overwrite the **old name**.
 
@@ -329,19 +329,19 @@ class: title-slide, middle
 
 ## Exercise
 
-From the data frame object `gapminder`, select the columns `lifeExp` and `gdpPercap` and rename them as life_expectancy and gdp_per_capita:
+From the data frame object `gapminder`, select the columns `lifeExp` and `gdpPercap` and rename them as `life_expectancy` and `gdp_per_capita`:
 
 
 ``` python
 (gapminder
   .select(
-    __.___(____).____(_____),
-    __.___(____).____(_____)
+    pl.col("lifeExp").alias("___________"),
+    pl.col("_________").alias("___________")
   )
 )
 ```
 
-<div class="countdown" id="timer_d161ab16" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown" id="timer_4df78e40" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -390,9 +390,9 @@ When you are starting out with python, the **easiest mistake to make** is to use
 
 ---
 
-# Multiple filters and multipe values
+# Multiple filters and multiple values
 
-Multiple can be filtered using specific variables like `is_in([])` or `is_between()`.
+Multiple values can be filtered using functions like `is_in([])` or `is_between()`.
 
 Multiple filters can be added one after the other, separated with a comma.
 
@@ -416,11 +416,11 @@ class: title-slide, middle
 
 ## Exercise
 
-1/ Be sure that the packages `polars` is loaded
+1/ Be sure that the package `polars` is loaded
 
 2/ Be sure that the object `gapminder` is created
 
-3/ Create a new object that only contains data for France
+3/ Create a new object called `gapminder_france` that only contains data for France
 
 
 ``` python
@@ -429,9 +429,9 @@ _____ = (_____
 )
 ```
 
-4/ Create a new object using the previous object that only contains data for France in 1982
+4/ From `gapminder_france`, create a new object called `gapminder_france_1982` that only contains data for France in 1982 (hint: filter the `year` column)
 
-<div class="countdown" id="timer_2cd7c46b" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown" id="timer_e7b93ca1" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -479,7 +479,7 @@ ____ = (____
 )
 ```
 
-<div class="countdown" id="timer_c6e3b47b" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown" id="timer_65e65627" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -530,6 +530,20 @@ For example, if we applied exactly the same code to a data frame **grouped by ye
 ```
 
 ---
+
+# The group_by() and agg() functions
+
+Using `[]` also works to define the columns to group by.
+
+
+``` python
+(gapminder
+  .group_by(["year"])
+  .agg(pl.col("pop").mean().alias("pop_average"))
+)
+```
+
+---
 class: title-slide, middle
 
 ## Live Demo
@@ -539,7 +553,7 @@ class: title-slide, middle
 
 ## Exercise
 
-1/ From the data frame object `gapminder`, summarise the population average with the `mean()` function by `year` and by `continent` by adding the second grouping variable after the first one (use a coma to separate them):
+1/ From the data frame object `gapminder`, summarise the population average with the `mean()` function by `year` and by `continent` by adding the second grouping variable after the first one (use a comma to separate them):
 
 
 ``` python
@@ -552,9 +566,9 @@ class: title-slide, middle
 )
 ```
 
-2/ From the data frame object `gapminder`, summarise the population standard deviation with the `std()` function by `year` and by `continent` by adding the second grouping variable after the first one (use a coma to separate them).
+2/ From the data frame object `gapminder`, summarise the population standard deviation with the `std()` function by `year` and by `continent` by adding the second grouping variable after the first one (use a comma to separate them).
 
-<div class="countdown" id="timer_13da4265" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown" id="timer_f2ee46cb" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -594,11 +608,11 @@ class: title-slide, middle
 
 ## Exercise
 
-1/ From the data frame object `gapminder`, summarise the sum of the worldwide population by `year`
+1/ From the data frame object `gapminder`, summarise the sum of the worldwide population by `year`:
 
-2/ From the data frame object `gapminder`, summarise the lifeExp average with the `mean()` function by `year` and by `continent`
+2/ From the data frame object `gapminder`, summarise the `lifeExp` average with the `mean()` function by `year` and by `continent`:
 
-<div class="countdown" id="timer_a8c62785" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown" id="timer_45dbec96" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -651,7 +665,7 @@ table_2 = (gapminder
 Different possibilities to automatically join the dataframe objects
 
 
-``` r
+``` python
 table_right_joined = (table_1
   .join(table_2, on = "country", how = "right")
 )
@@ -687,7 +701,7 @@ table_2 = (gapminder
 )
 ```
 
-Set the argument `by` to manually choose the key variables, and specify the association:
+Set the arguments `left_on` and `right_on` to manually specify the matching key variables:
 
 
 ``` python
@@ -699,6 +713,106 @@ Set the argument `by` to manually choose the key variables, and specify the asso
   )
 )
 ```
+
+---
+
+class: inverse, mline, center, middle
+
+# 7. Vibe Coding with Polars
+
+---
+
+# What is Vibe Coding?
+
+Vibe coding is the practice of **describing what you want in natural language** and letting an AI assistant (such as ChatGPT, Claude, or GitHub Copilot) generate the code for you.
+
+Instead of memorising every function and argument, you can:
+
+- **Describe your goal** in plain English (or any language)
+- **Review** the generated code to check it makes sense
+- **Run it** and iterate if needed
+
+This is especially powerful with Polars because:
+
+- The method chaining syntax is very readable and easy to verify
+- AI assistants are very good at generating Polars code
+- You can focus on **what** you want to achieve rather than **how**
+
+<span>&lt;i class="fas  fa-exclamation-triangle faa-flash animated faa-slow " style=" color:red;"&gt;&lt;/i&gt;</span> Vibe coding does **not** mean blindly trusting AI output. Always **read and understand** the code before running it!
+
+---
+
+# Vibe Coding in Practice
+
+Here is an example workflow:
+
+**Step 1:** Write a prompt describing your data transformation goal
+
+&gt; "From the gapminder dataset, calculate the average life expectancy per continent for the year 2007 and sort the result from highest to lowest."
+
+**Step 2:** The AI generates Polars code
+
+
+``` python
+(gapminder
+  .filter(pl.col("year") == 2007)
+  .group_by(pl.col("continent"))
+  .agg(pl.col("lifeExp").mean().alias("avg_lifeExp"))
+  .sort("avg_lifeExp", descending = True)
+)
+```
+
+**Step 3:** Read the code, verify it matches your intent, and run it
+
+---
+
+# Tips for Effective Vibe Coding
+
+.pull-left[
+**Good prompts are specific:**
+
+- Name the dataset and columns
+- Specify the operations (filter, group, sort...)
+- Mention the expected output format
+- State which library to use (Polars!)
+
+**Example of a good prompt:**
+
+&gt; "Using Polars, from the gapminder dataframe, create a new column gdp_total equal to pop times gdpPercap, then show only the year and gdp_total columns."
+]
+
+.pull-right[
+**Common pitfalls to avoid:**
+
+- Not specifying Polars (the AI might generate Pandas code instead)
+- Accepting code without reading it
+- Not testing on a small subset first
+- Forgetting to check column names match your data
+
+**Always verify:**
+
+- Does the code use `pl.col()` correctly?
+- Are the column names spelled correctly?
+- Does the output have the expected number of rows/columns?
+]
+
+---
+class: title-slide, middle
+
+## Exercise
+
+Use an AI assistant (ChatGPT, Claude, or Copilot) to generate Polars code for the following tasks. **Review the code before running it!**
+
+1/ Ask the AI: *"Using Polars, from a dataframe called gapminder, find the country with the highest life expectancy in 2007."*
+
+2/ Ask the AI: *"Using Polars, from a dataframe called gapminder, calculate the total GDP (pop × gdpPercap) for each continent in 2007 and sort from highest to lowest."*
+
+3/ Copy the generated code into Google Colab, verify it looks correct, and run it. Did it work on the first try? If not, what did you need to fix?
+
+<div class="countdown" id="timer_909a001e" data-warn-when="60" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
 
 ---
 
