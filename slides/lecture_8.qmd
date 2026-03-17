@@ -1,0 +1,1171 @@
+---
+jupyter: python3
+title: "Lecture 8: Visualisations with lets-plot"
+subtitle: BAA1030 - Data Analytics and Story Telling
+author: Damien Dupré
+format:
+  revealjs:
+    theme: [theme/metropolis.scss]
+    toc-depth: 1
+    chalkboard: false
+    menu: true
+    slide-number: true
+preload-iframes: true
+execute: 
+  echo: true
+# https://lets-plot.org/python/
+---
+
+## Python so far
+
+We have already seen how to:
+
+- Subset values with `pl.filter()`
+- Subset columns with `pl.select()`
+- Compute new columns with `pl.with_columns()`
+- Aggregate data per group using `pl.group_by()` and `agg()`
+
+More importantly we have seen how to chain multiple transformations.
+
+Let's start to make some fancy visualisations!
+
+## Google Colab
+
+In your web browser (Chrome, Firefox, ...):
+
+1. Open these same slides on a tab to copy-paste the examples
+2. In another tab, go to: <https://colab.research.google.com>
+   - Sign in or Sign up (if not already done)
+   - In your workspace, Click "New Notebook" (if not already done)
+
+## The gapminder Dataset
+
+The dataset used today is called `gapminder`.
+
+Each row in this table corresponds to a country at a specific year. For each row, we have 6 columns:
+
+- **country**: Name of country.
+- **year**: Year of the observation (between 1952 and 2007).
+- **pop**: Number of people living in the country.
+- **continent**: Which of the five continents the country is part of.
+- **lifeExp**: Life expectancy in years.
+- **gdpPercap**: Gross domestic product (in US dollars).
+
+## The gapminder Dataset
+
+to use the `gapminder` dataset, use the function `pl.read_csv` on the url:
+
+> https://raw.githubusercontent.com/damien-dupre/data/refs/heads/master/gapminder.csv
+
+```{python}
+import polars as pl
+gapminder = pl.read_csv("https://raw.githubusercontent.com/damien-dupre/data/refs/heads/master/gapminder.csv")
+```
+
+```{python}
+#| echo: false
+import io
+from IPython.display import HTML
+from lets_plot import *
+LetsPlot.setup_html()
+```
+
+# 1. Basic Visualisations with lets-plot
+
+## Using lets-plot
+
+The lets-plot package provides an **easy way to create and to customise your plots**. It is developed by JetBrains and is a faithful port of R's ggplot2 to Python.
+
+```{.bash}
+! pip install lets_plot
+```
+
+Most used packages would include Matplotlib or Seaborn. However lets-plot is based on the Grammar of Graphics, which makes it much easier to use and more powerful.
+
+```{python}
+#| eval: false
+#| echo: true
+from lets_plot import *
+LetsPlot.setup_html()
+```
+
+. . .
+
+**"the grammar of graphics"** defines a set of rules for constructing statistical graphics by combining different types of layers.
+
+---
+
+## Using lets-plot
+
+From the first (top) to the last (bottom), the mandatory layers are :
+
+![](https://miro.medium.com/v2/resize:fit:1400/1*hd6-LkI_sy4b4nu720eV_A.png)
+
+---
+
+## Data
+
+In lets-plot, the **data** layer is the name of the object that contains the variables to plot.
+
+The visualisation is initiated with the function `ggplot()`
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(data=my_dataframe) # the argument name can be omitted too
+)
+```
+
+. . .
+
+Let's try to use the gapminder data:
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(data=gapminder) # or ggplot(gapminder)
+)
+```
+
+```{python}
+#| echo: false
+p = (ggplot(data=gapminder.to_pandas()) + ggsize(800, 100))
+file_like = io.BytesIO()
+p.to_html(file_like, iframe=True)
+HTML(file_like.getvalue().decode('utf-8'))
+```
+
+Nothing is displayed! We need to define the axes (aesthetic mapping) and their corresponding layers. **Let's add additional layers with the symbol `+`.**
+
+---
+
+## Aesthetic Mapping
+
+The **aesthetic mapping** refers to the frame of the plot, `x` for the variable in the x-axis and `y` for the variable in the y-axis. There are many more aesthetics such as `color`, `fill` and `group` but let's focus on the x and y axes for the moment. The mapping is performed by a function called `aes()` for aesthetics.
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(data=my_dataframe)
+  + aes(x="my_xaxis_variable", y="my_yaxis_variable")
+)
+```
+
+. . .
+
+The arguments names of `aes()` can be omitted if filled in the right order:
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(my_dataframe)
+  + aes("my_xaxis_variable", "my_yaxis_variable")
+)
+```
+
+Obviously, some type of layers are not suitable for all aesthetics, it depends on how many variables are included and their type (categorical or continuous).
+
+---
+
+## Aesthetic Mapping
+
+**Aesthetic mapping represents** not only the variables defined as **x-axis** and **y-axis** but also, **colours** of borders (colors), colours of shapes (fill), **shapes**, **size**, 
+
+:::: {.columns}
+::: {.column width="45%"}
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(data=my_dataframe)
+  + aes(
+      x="my_xaxis_variable",
+      y="my_yaxis_variable",
+      color="my_color_variable",
+      fill="my_fill_variable",
+      shape="my_shape_variable",
+      size="my_size_variable"
+  )
+)
+```
+:::
+::: {.column width="45%"}
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(data=gapminder)
+  + aes(
+     x="gdpPercap",
+     y="lifeExp",
+     color="continent"
+  )
+)
+```
+
+:::
+::::
+
+## Geometries
+
+**Geometries**, which are shapes we use to represent our data. There is a dedicated function for every type of shape to plot but all start with `geom_`
+
+| function           | shape     |
+|--------------------|-----------|
+| `geom_point()`     | point     |
+| `geom_line()`      | line      |
+| `geom_bar()`       | bar       |
+| `geom_histogram()` | histogram |
+| `geom_boxplot()`   | boxplot   |
+| ...                | ...       |
+
+See here the exhaustive list of all available geometry functions: <https://lets-plot.org/python/pages/api.html>
+
+Note: Not all data is suitable for all types of geometries. You have to find the geometry that corresponds to your data.
+
+## Geometries
+
+Example for **scatter plots**:
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(data=my_dataframe)
+  + aes(x="my_xaxis_variable", y="my_yaxis_variable")
+  + geom_point()
+)
+```
+
+Example for **line graph**:
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(data=my_dataframe)
+  + aes(x="my_xaxis_variable", y="my_yaxis_variable")
+  + geom_line()
+)
+```
+
+Example for **bar graph** (with pre-computed values):
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(data=my_dataframe)
+  + aes(x="my_xaxis_variable", y="my_yaxis_variable")
+  + geom_bar(stat="identity")
+)
+```
+
+## Geometries Applied to gapminder
+
+Example for **scatter plots**:
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(data=gapminder)
+  + aes(x="gdpPercap", y="lifeExp", color="continent")
+  + geom_point()
+)
+```
+
+```{python}
+#| echo: false
+p = (ggplot(data=gapminder.to_pandas())
+  + aes(x="gdpPercap", y="lifeExp", color="continent")
+  + geom_point()
+  + ggsize(800, 400)
+)
+file_like = io.BytesIO()
+p.to_html(file_like, iframe=True)
+HTML(file_like.getvalue().decode('utf-8'))
+```
+
+## Geometries Applied to gapminder
+
+Example for **line graph**:
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(data=gapminder)
+  + aes(x="year", y="lifeExp", color="country")
+  + geom_line()
+  + guides(color="none") # removes legend because too many countries
+)
+```
+
+```{python}
+#| echo: false
+p = (ggplot(data=gapminder.to_pandas())
+  + aes(x="year", y="lifeExp", color="country")
+  + geom_line()
+  + guides(color="none")
+  + ggsize(800, 380)
+)
+file_like = io.BytesIO()
+p.to_html(file_like, iframe=True)
+HTML(file_like.getvalue().decode('utf-8'))
+```
+
+## Geometries Applied to gapminder
+
+Example for **bar graph**:
+
+```{python}
+#| eval: false
+#| echo: true
+gapminder_avg_continent_2007 = (gapminder
+  .filter(pl.col("year") == 2007)
+  .group_by(pl.col("continent"))
+  .agg(pl.col("lifeExp").mean().alias("m_lifeExp"))
+)
+
+(ggplot(data=gapminder_avg_continent_2007)
+  + aes(x="continent", y="m_lifeExp", fill="continent")
+  + geom_bar(stat="identity")
+)
+```
+
+```{python}
+#| echo: false
+gapminder_avg_continent_2007 = (gapminder
+  .filter(pl.col("year") == 2007)
+  .group_by(pl.col("continent"))
+  .agg(pl.col("lifeExp").mean().alias("m_lifeExp"))
+)
+p = (ggplot(data=gapminder_avg_continent_2007.to_pandas())
+  + aes(x="continent", y="m_lifeExp", fill="continent")
+  + geom_bar(stat="identity")
+  + ggsize(800, 300)
+)
+file_like = io.BytesIO()
+p.to_html(file_like, iframe=True)
+HTML(file_like.getvalue().decode('utf-8'))
+```
+
+# Live Demo
+
+## Exercise {background="#43464B"}
+
+Create:
+
+- A `ggplot()` layer with the `gapminder` data,
+- An `aes()` layer containing `continent` as x, `lifeExp` as y, and `continent` as color,
+- And a `geom_boxplot()` layer:
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(gapminder)
+  + aes(x="continent", y="______", color="________")
+  + geom_boxplot()
+)
+```
+
+- A `ggplot()` layer with the `gapminder` data,
+- An `aes()` layer containing `year` as x, `pop` as y, and `continent` as fill,
+- And a `geom_bar(stat="identity")` layer:
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(gapminder)
+  + aes(x="____", y="___", fill="________")
+  + geom_bar(stat="identity")
+)
+```
+
+**5 minutes**
+
+# 2. Advanced Visualisations with lets-plot
+
+## Inherited Properties of Geometries
+
+You can add as many geometry layers as you want, however repeating the mapping for each geometry layer is very redundant.
+
+Thankfully, if all your geometry layers are using the same aesthetics mapping, **it is possible to include this mapping inside the `ggplot()`**, then all the geometry layers will have the same mapping:
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(gapminder, aes(x="year", y="lifeExp", color="country"))
+  + geom_point()
+  + geom_line()
+)
+```
+
+. . .
+
+If aesthetics are different for several geometry layers, it is also **possible to declare the aesthetics in the geometry**:
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(gapminder)
+  + geom_point(aes(x="year", y="lifeExp", shape="continent"))
+  + geom_line(aes(x="year", y="lifeExp", color="country"))
+)
+```
+
+## Themes
+
+Now, to make the plot more professional, let's remove that standard grey background using a different theme.
+
+Many themes come built into the lets-plot package. My preference is `theme_bw()` but once you start typing `theme_` a list of options will pop up.
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(gapminder)
+  + aes(x="gdpPercap", y="lifeExp", color="continent")
+  + geom_point()
+  + theme_bw()
+)
+```
+
+```{python}
+#| echo: false
+p = (ggplot(gapminder.to_pandas())
+  + aes(x="gdpPercap", y="lifeExp", color="continent")
+  + geom_point()
+  + theme_bw()
+  + ggsize(800, 300)
+)
+file_like = io.BytesIO()
+p.to_html(file_like, iframe=True)
+HTML(file_like.getvalue().decode('utf-8'))
+```
+
+## Themes
+
+:::: {.columns}
+::: {.column width="45%"}
+Built-in themes include:
+
+- `theme_grey` (default)
+- `theme_bw`
+- `theme_classic`
+- `theme_light`
+- `theme_minimal`
+- `theme_minimal2`
+- `theme_void`
+- `theme_none`
+
+And **theme flavors** for color variations:
+
+- `flavor_darcula`
+- `flavor_solarized_light`
+- `flavor_solarized_dark`
+- `flavor_high_contrast_dark`
+- `flavor_high_contrast_light`
+:::
+::: {.column width="45%"}
+![](https://sakaluk.wordpress.com/wp-content/uploads/2016/02/4282183.jpg)
+:::
+::::
+
+## Facets
+
+Faceting is used to **split a particular visualisation by the values of another variable**.
+
+This will create multiple copies of the same type of plot with matching x and y axes, but whose content will differ.
+
+For example, suppose we were interested in looking at the evolution of life expectancy by continent from 1952. We could "split" this figure for each continent. In other words, we would plot a scatter plot for each continent separately.
+
+We do this by adding `facet_wrap("continent")` layer.
+
+## Facets
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(gapminder)
+  + aes(x="year", y="lifeExp", color="continent")
+  + geom_point()
+  + facet_wrap("continent")
+  + theme_classic()
+)
+```
+
+```{python}
+#| echo: false
+p = (ggplot(gapminder.to_pandas())
+  + aes(x="year", y="lifeExp", color="continent")
+  + geom_point()
+  + facet_wrap("continent")
+  + theme_classic()
+  + ggsize(1100, 400)
+)
+file_like = io.BytesIO()
+p.to_html(file_like, iframe=True)
+HTML(file_like.getvalue().decode('utf-8'))
+```
+
+## Facets
+
+We can also specify the number of rows and columns in the grid by using the `nrow` and `ncol` arguments inside of `facet_wrap()`.
+
+For example, suppose we would like our faceted figure to have 1 row instead of 2. We simply add an `nrow=1` argument to `facet_wrap("continent")`:
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(gapminder)
+  + aes(x="year", y="lifeExp", color="continent")
+  + geom_point()
+  + facet_wrap("continent", nrow=1)
+  + theme_classic()
+)
+```
+
+```{python}
+#| echo: false
+p = (ggplot(gapminder.to_pandas())
+  + aes(x="year", y="lifeExp", color="continent")
+  + geom_point()
+  + facet_wrap("continent", nrow=1)
+  + theme_classic()
+  + ggsize(1100, 300)
+)
+file_like = io.BytesIO()
+p.to_html(file_like, iframe=True)
+HTML(file_like.getvalue().decode('utf-8'))
+```
+
+## Labels
+
+lets-plot has a layer called `labs()` to change the axis labels and add titles.
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(gapminder)
+  + aes(x="year", y="lifeExp", color="continent")
+  + geom_point()
+  + facet_wrap("continent", nrow=1)
+  + labs(
+      x="Year (from 1952 to 2007)",
+      y="Life Expectancy",
+      title="Evolution of life expectancy from 1952 to 2007 per continent."
+  )
+  + theme_classic()
+)
+```
+
+```{python}
+#| echo: false
+p = (ggplot(gapminder.to_pandas())
+  + aes(x="year", y="lifeExp", color="continent")
+  + geom_point()
+  + facet_wrap("continent", nrow=1)
+  + labs(x="Year (from 1952 to 2007)", y="Life Expectancy", title="Evolution of life expectancy from 1952 to 2007 per continent.")
+  + theme_classic()
+  + ggsize(1000, 250)
+)
+file_like = io.BytesIO()
+p.to_html(file_like, iframe=True)
+HTML(file_like.getvalue().decode('utf-8'))
+```
+
+`labs()` can rename x, y and title as well as many more texts like colour, subtitle, or caption
+
+## Statistics and Special Effects
+
+Instead of creating summaries inside the data frame object, ggplot has some functions to calculate and display them automatically.
+
+The first special effect is the `geom_smooth()` layer. `geom_smooth()` is a classic geometry layer but which displays linear and non-linear trends.
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(gapminder)
+  + aes(x="year", y="lifeExp", color="continent")
+  + geom_point()
+  + geom_smooth()
+  + facet_wrap("continent", nrow=1)
+  + theme_classic()
+)
+```
+
+```{python}
+#| echo: false
+p = (ggplot(gapminder.to_pandas())
+  + aes(x="year", y="lifeExp", color="continent")
+  + geom_point()
+  + geom_smooth()
+  + facet_wrap("continent", nrow=1)
+  + theme_classic()
+  + ggsize(1100, 250)
+)
+file_like = io.BytesIO()
+p.to_html(file_like, iframe=True)
+HTML(file_like.getvalue().decode('utf-8'))
+```
+
+## Statistics and Special Effects
+
+`geom_smooth()` has one important extra argument called `method`. If method has the value **"lm"**, a linear regression will be shown. If method has the value **"loess"**, a non-linear regression will be shown.
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(gapminder)
+  + aes(x="year", y="lifeExp", color="continent")
+  + geom_point()
+  + geom_smooth(method="lm")
+  + facet_wrap("continent", nrow=1)
+  + theme_classic()
+)
+```
+
+```{python}
+#| echo: false
+p = (ggplot(gapminder.to_pandas())
+  + aes(x="year", y="lifeExp", color="continent")
+  + geom_point()
+  + geom_smooth(method="lm")
+  + facet_wrap("continent", nrow=1)
+  + theme_classic()
+  + ggsize(1100, 300)
+)
+file_like = io.BytesIO()
+p.to_html(file_like, iframe=True)
+HTML(file_like.getvalue().decode('utf-8'))
+```
+
+## Additional Options
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(gapminder)
+  + aes(x="year", y="lifeExp", color="continent")
+  + geom_point(alpha=0.2, size=1)
+  + geom_smooth(method="lm")
+  + facet_wrap("continent", nrow=1)
+  + scale_x_continuous(breaks=[1960, 1980, 2000])
+  + labs(
+      x="Year (from 1952 to 2007)",
+      y="Life Expectancy",
+      title="Evolution of life expectancy from 1952 to 2007 per continent."
+  )
+  + theme_classic()
+  + theme(text=element_text(size=20))
+  + guides(color="none")
+)
+```
+
+## Additional Options
+
+```{python}
+#| echo: false
+p = (ggplot(gapminder.to_pandas())
+  + aes(x="year", y="lifeExp", color="continent")
+  + geom_point(alpha=0.2, size=1)
+  + geom_smooth(method="lm")
+  + facet_wrap("continent", nrow=1)
+  + scale_x_continuous(breaks=[1960, 1980, 2000])
+  + labs(x="Year (from 1952 to 2007)", y="Life Expectancy", title="Evolution of life expectancy from 1952 to 2007 per continent.")
+  + theme_classic()
+  + theme(text=element_text(size=20))
+  + guides(color="none")
+  + ggsize(1100, 400)
+)
+file_like = io.BytesIO()
+p.to_html(file_like, iframe=True)
+HTML(file_like.getvalue().decode('utf-8'))
+```
+
+## Interactive Tooltips
+
+One unique feature of lets-plot is **built-in interactive tooltips**. Unlike plotnine or matplotlib, lets-plot renders interactive HTML plots by default.
+
+You can customise tooltips using `layer_tooltips()`:
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(gapminder.filter(pl.col("year") == 2007))
+  + aes(x="gdpPercap", y="lifeExp", color="continent")
+  + geom_point(
+      tooltips=layer_tooltips()
+        .line("@country")
+        .line("Life Exp: @lifeExp")
+        .line("GDP/cap: @gdpPercap")
+  )
+  + theme_bw()
+)
+```
+
+. . .
+
+Tooltip syntax:
+
+- `@variable_name` references a data column
+- `.line("label|@value")` adds a formatted line
+- `.format("@var", ".2f")` formats numeric values
+
+Hover over points in your Colab notebook to see tooltips in action!
+
+## Map Visualisations
+
+You will need a new package to read the world shape file:
+
+```{python}
+import geopandas as gp
+```
+
+To do a Map visualisation with lets-plot, we **need the shape** of each country.
+
+```{python}
+shape_world = gp.read_file("https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/world-administrative-boundaries/exports/shp")
+```
+
+## Map Visualisations
+
+:::: {.columns}
+::: {.column width="45%"}
+Then, you can plot this map with a default black filling colour:
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot()
+  + geom_map(data=shape_world)
+)
+```
+:::
+::: {.column width="45%"}
+```{python}
+#| echo: false
+p = (ggplot()
+  + geom_map(data=shape_world)
+  + ggsize(400, 250)
+)
+file_like = io.BytesIO()
+p.to_html(file_like, iframe=True)
+HTML(file_like.getvalue().decode('utf-8'))
+```
+:::
+::::
+
+## Map Visualisations
+
+To obtain colours that match values of a specific variable, these variables need to be joined to the original data that we want to display on the map. `geom_map()` will use these variables to fill the countries with a colour gradient.
+
+For example, let's display the population for each country in 2007:
+
+```{python}
+#| eval: false
+#| echo: true
+pop_2007 = (gapminder
+  .filter(pl.col("year") == 2007)
+)
+
+map_pop_2007 = (shape_world
+  .merge(pop_2007.to_pandas(), left_on="name", right_on="country", how="outer")
+)
+
+(ggplot()
+  + geom_map(data=map_pop_2007, mapping=aes(fill="pop"))
+  + coord_fixed()
+)
+```
+
+Do NOT merge `shape_world` with an unfiltered object and do NOT use the resulting object for any other visualisation.
+
+## Map Visualisations
+
+```{python}
+#| echo: false
+pop_2007 = (gapminder
+  .filter(pl.col("year") == 2007)
+)
+map_pop_2007 = (shape_world
+  .merge(pop_2007.to_pandas(), left_on="name", right_on="country", how="outer")
+)
+p = (ggplot()
+  + geom_map(data=map_pop_2007, mapping=aes(fill="pop"))
+  + coord_fixed()
+  + ggsize(800, 500)
+)
+file_like = io.BytesIO()
+p.to_html(file_like, iframe=True)
+HTML(file_like.getvalue().decode('utf-8'))
+```
+
+Use the `coord_fixed()` layer to keep relationship between latitude and longitude scales
+
+## Map Visualisations
+
+`gapminder` and the `shape_world` objects have different spelling for the countries. For example "United States of America" can be "USA" or just "United States".
+
+To solve this, we can merge them with a new object providing ISO codes for countries regardless of their spelling.
+
+```{python}
+#| eval: false
+#| echo: true
+# 1. Read the csv file containing the iso3 convention for all spellings
+country_code = pl.read_csv("https://raw.githubusercontent.com/adrivsh/country_names/refs/heads/master/names_to_iso.csv")
+# 2. Join country_code and gapminder to identify the iso3 code for each country
+gapminder_code = (gapminder.join(country_code, on="country", how="left"))
+# 3. Filter gapminder_code to have only values for 2007
+gapminder_code_2007 = (gapminder_code.filter(pl.col("year") == 2007))
+# 4. Merge the values with the shape file for each country using the iso3
+shape_gapminder_code_2007 = (shape_world
+  .merge(gapminder_code_2007.to_pandas(), on="iso3", how="outer")
+)
+# 5. Plot the map
+(ggplot()
+  + geom_map(data=shape_gapminder_code_2007, mapping=aes(fill="pop"))
+  + coord_fixed()
+)
+```
+
+## Map Visualisations
+
+```{python}
+#| echo: false
+country_code = pl.read_csv("https://raw.githubusercontent.com/adrivsh/country_names/refs/heads/master/names_to_iso.csv")
+gapminder_code = gapminder.join(country_code, on="country", how="left")
+gapminder_code_2007 = (gapminder_code.filter(pl.col("year") == 2007))
+shape_gapminder_code_2007 = (shape_world
+  .merge(gapminder_code_2007.to_pandas(), on="iso3", how="outer")
+)
+p = (ggplot()
+  + geom_map(data=shape_gapminder_code_2007, mapping=aes(fill="pop"))
+  + coord_fixed()
+  + ggsize(800, 500)
+)
+file_like = io.BytesIO()
+p.to_html(file_like, iframe=True)
+HTML(file_like.getvalue().decode('utf-8'))
+```
+
+## Map Visualisations
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot()
+  + geom_map(data=shape_gapminder_code_2007, mapping=aes(fill="pop"))
+  + scale_fill_gradient(low="yellow", high="red")
+  + labs(
+      title="Differences between countries regarding their population in 2007",
+      subtitle="Countries in grey have no data due to a mismatch with their names",
+      caption="Source: gapminder",
+      x="Longitude",
+      y="Latitude",
+      fill="Country Population"
+  )
+  + coord_fixed()
+  + theme_bw()
+)
+```
+
+## Map Visualisations
+
+```{python}
+#| echo: false
+p = (ggplot()
+  + geom_map(data=shape_gapminder_code_2007, mapping=aes(fill="pop"))
+  + scale_fill_gradient(low="yellow", high="red")
+  + labs(title="Differences between countries regarding their population in 2007", subtitle="Countries in grey have no data due to a mismatch with their names", caption="Source: gapminder", x="Longitude", y="Latitude", fill="Country Population")
+  + coord_fixed()
+  + theme_bw()
+  + ggsize(800, 500)
+)
+file_like = io.BytesIO()
+p.to_html(file_like, iframe=True)
+HTML(file_like.getvalue().decode('utf-8'))
+```
+
+# Live Demo
+
+## Exercise
+
+Build a ggplot with the `gapminder` dataset and one `aes()` layer which contains x as `continent`, y as `lifeExp` and colour as `continent`. Use `geom_boxplot()` as geometry, `year` as a facet variable, a theme of your choice, and change the axis labels:
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(gapminder)
+  + aes(x="________", y="_______", color="________")
+  + geom_boxplot()
+  + facet_wrap("____")
+  + labs(x="______", y="______", title="______")
+  + theme_____()
+)
+```
+
+## Exercise
+
+Build a ggplot with the `gapminder` dataset and:
+
+- One `geom_line()` layer which contains x as `year`, y as `lifeExp` and group as `country` in its `aes()`,
+- One `geom_smooth()` layer which contains x as `year`, y as `lifeExp` and colour as `continent` in its `aes()`,
+- One `facet_wrap()` for each continent.
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(gapminder)
+  + geom_line(aes(x="____", y="_______", group="_______"))
+  + geom_smooth(aes(x="____", y="_______", color="________"))
+  + facet_wrap("________")
+)
+```
+
+**10 minutes**
+
+# 3. Combine ggplot() and Transformations
+
+## Combine ggplot() and Transformations
+
+A very powerful way to create figures is to use a **ggplot at the end of data transformations**.
+
+With lets-plot, you can pass the result of your data transformations directly to `ggplot()`:
+
+```{python}
+#| eval: false
+#| echo: true
+# this classic representation:
+(ggplot(data=gapminder)
+  + aes(x="gdpPercap", y="lifeExp", color="continent")
+  + geom_point()
+)
+# is the same as passing data inline:
+(ggplot(gapminder, aes(x="gdpPercap", y="lifeExp", color="continent"))
+  + geom_point()
+)
+```
+
+The layers are still added with the `+` symbol.
+
+You can also pass the result of a transformation directly:
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(gapminder.filter(pl.col("year") == 2007))
+  + aes(x="gdpPercap", y="lifeExp", color="continent")
+  + geom_point()
+)
+```
+
+## filter() to ggplot()
+
+You can easily display only the data for a specific section of your interest. For example, let's filter the data only for Ireland:
+
+```{python}
+#| eval: false
+#| echo: true
+(ggplot(gapminder.filter(pl.col("country") == "Ireland"))
+  + aes(x="year", y="lifeExp", color="country")
+  + geom_line()
+)
+```
+
+```{python}
+#| echo: false
+p = (ggplot(gapminder.filter(pl.col("country") == "Ireland").to_pandas())
+  + aes(x="year", y="lifeExp", color="country")
+  + geom_line()
+  + ggsize(800, 300)
+)
+file_like = io.BytesIO()
+p.to_html(file_like, iframe=True)
+HTML(file_like.getvalue().decode('utf-8'))
+```
+
+## with_columns() to ggplot()
+
+If you need to display a variable that has to be created beforehand, you can always include a `with_columns()` statement in the chain.
+
+For example, let's create the variable `gdpPercountry` which is the result of the multiplication between countries' population and countries' gdpPercap. Then let's display this information for Ireland:
+
+```{python}
+#| eval: false
+#| echo: true
+gapminder_gdp = (gapminder
+  .with_columns(gdpPercountry=pl.col("gdpPercap") * pl.col("pop"))
+  .filter(pl.col("country") == "Ireland")
+)
+
+(ggplot(gapminder_gdp)
+  + aes(x="gdpPercountry", y="lifeExp", color="country")
+  + geom_line()
+)
+```
+
+```{python}
+#| echo: false
+gapminder_gdp = (gapminder
+  .with_columns(gdpPercountry=pl.col("gdpPercap") * pl.col("pop"))
+  .filter(pl.col("country") == "Ireland")
+)
+p = (ggplot(gapminder_gdp.to_pandas())
+  + aes(x="gdpPercountry", y="lifeExp", color="country")
+  + geom_line()
+  + ggsize(800, 250)
+)
+file_like = io.BytesIO()
+p.to_html(file_like, iframe=True)
+HTML(file_like.getvalue().decode('utf-8'))
+```
+
+## group_by() and agg() to ggplot()
+
+Finally, one of the most useful possibilities will be to aggregate variables per groups and to display this information in figures.
+
+For example, let's create the average population per continent and display how this average evolves with time:
+
+```{python}
+#| eval: false
+#| echo: true
+gapminder_avg = (gapminder
+  .group_by(pl.col("year"), pl.col("continent"))
+  .agg(pl.col("pop").mean().alias("m_pop"))
+)
+
+(ggplot(gapminder_avg)
+  + aes(x="year", y="m_pop", color="continent")
+  + geom_line()
+)
+```
+
+```{python}
+#| echo: false
+gapminder_avg = (gapminder
+  .group_by(pl.col("year"), pl.col("continent"))
+  .agg(pl.col("pop").mean().alias("m_pop"))
+)
+p = (ggplot(gapminder_avg.to_pandas())
+  + aes(x="year", y="m_pop", color="continent")
+  + geom_line()
+  + ggsize(800, 250)
+)
+file_like = io.BytesIO()
+p.to_html(file_like, iframe=True)
+HTML(file_like.getvalue().decode('utf-8'))
+```
+
+## group_by() and agg() to ggplot()
+
+We can also compare the sum of the population by continent for the year 2007:
+
+```{python}
+#| eval: false
+#| echo: true
+gapminder_sum = (gapminder
+  .filter(pl.col("year") == 2007)
+  .group_by(pl.col("continent"))
+  .agg(pl.col("pop").sum().alias("s_pop"))
+)
+
+(ggplot(gapminder_sum)
+  + aes(x="continent", y="s_pop", fill="continent")
+  + geom_bar(stat="identity")
+)
+```
+
+```{python}
+#| echo: false
+gapminder_sum = (gapminder
+  .filter(pl.col("year") == 2007)
+  .group_by(pl.col("continent"))
+  .agg(pl.col("pop").sum().alias("s_pop"))
+)
+p = (ggplot(gapminder_sum.to_pandas())
+  + aes(x="continent", y="s_pop", fill="continent")
+  + geom_bar(stat="identity")
+  + ggsize(800, 350)
+)
+file_like = io.BytesIO()
+p.to_html(file_like, iframe=True)
+HTML(file_like.getvalue().decode('utf-8'))
+```
+
+# 4. Vibe Coding Visualisations
+
+## What is Vibe Coding?
+
+Vibe coding is the practice of **describing what you want in natural language** and letting an AI assistant (such as ChatGPT, Claude, or GitHub Copilot) generate the code for you.
+
+This is especially powerful for data visualisation because:
+
+- Plots have many customisation options that are hard to memorise
+- AI assistants are very good at generating lets-plot/ggplot code
+- You can describe the **plot you want to see** instead of looking up every argument
+- Iterating on a design is faster: just describe what to change
+
+Vibe coding does **not** mean blindly trusting AI output. Always **read and understand** the code before running it!
+
+## Vibe Coding in Practice
+
+**Step 1:** Write a prompt describing the visualisation you want
+
+> "Using lets-plot with the gapminder dataset, create a scatter plot of gdpPercap vs lifeExp for the year 2007 only, coloured by continent. Add a linear trend line, use theme_minimal, and label the axes 'GDP per Capita' and 'Life Expectancy'."
+
+**Step 2:** The AI generates lets-plot code
+
+```{python}
+#| eval: false
+#| echo: true
+gapminder_2007 = gapminder.filter(pl.col("year") == 2007)
+
+(ggplot(gapminder_2007)
+  + aes(x="gdpPercap", y="lifeExp", color="continent")
+  + geom_point()
+  + geom_smooth(method="lm")
+  + labs(x="GDP per Capita", y="Life Expectancy")
+  + theme_minimal()
+)
+```
+
+**Step 3:** Read the code, verify each layer matches your intent, and run it
+
+## Tips for Vibe Coding Visualisations
+
+:::: {.columns}
+::: {.column width="45%"}
+**Good prompts are specific:**
+
+- Name the dataset and column names
+- Specify the geometry (scatter, line, bar...)
+- Mention colours, facets, themes, and labels
+- State the library: "Using lets-plot" (not matplotlib!)
+
+**Example of a good prompt:**
+
+> "Using lets-plot, from gapminder filtered to 2007, create a bar chart of total population per continent, filled by continent, with theme_bw and a title."
+:::
+::: {.column width="45%"}
+**Common pitfalls to avoid:**
+
+- Not specifying lets-plot (AI may use matplotlib or seaborn)
+- Forgetting to mention that data comes from Polars
+- Accepting code without checking column names
+- Not verifying the data transformation step
+
+**Always verify:**
+
+- Are the column names in quotes and spelled correctly?
+- Is the geometry appropriate for your data?
+- Does the code store transformed data before passing to `ggplot()`?
+- Do the layers make sense when read top to bottom?
+:::
+::::
+
+## Exercise
+
+Use an AI assistant (ChatGPT, Claude, or Copilot) to generate lets-plot code for the following tasks. **Review the code before running it!**
+
+1/ Ask the AI: *"Using lets-plot and Polars, from a dataframe called gapminder, create a line chart showing the evolution of average life expectancy per continent over time. Use different colours for each continent and add a title."*
+
+2/ Ask the AI: *"Using lets-plot and Polars, from a dataframe called gapminder filtered to the year 2007, create a horizontal bar chart of GDP per capita by country for Europe only. Sort the bars from highest to lowest."*
+
+3/ Copy the generated code into Google Colab, verify it looks correct, and run it. Did it produce the expected visualisation? If not, what did you need to fix?
+
+**10 minutes**
