@@ -85,9 +85,21 @@ Similarly, when working with Google Colab, it is possible to share the [link to 
 ![](https://media.geeksforgeeks.org/wp-content/uploads/20230908214338/share-colab.png)&lt;!-- --&gt;
 ]
 
-However only the content of your code will be shared and not the output.
+However only the content mixes code chunks, messages, and the output.
 
-As a result, if your boss does not have access to your data, they won't be able to reproduce or just see your results.
+Plus, if your boss does not have access to your data, they won't be able to reproduce or just see your results.
+
+---
+
+# Sharing a Notebook
+
+![](https://solutions.posit.co/write-code/jupyter/python-jupyter.png)
+
+---
+
+# Sharing a Notebook
+
+![](https://miro.medium.com/v2/resize:fit:1400/1*vCsxkfm9mLyumxLqfKyvMA.png)
 
 ---
 
@@ -138,80 +150,76 @@ Try it by yourself!
 
 Quarto must be used from a Terminal!
 
-This is straightforward when you are using your own computer but it is tricky when using Google Colab as there is no free Terminal.
+This is straightforward when you are using your own computer but it is tricky when using Google Colab.
 
-To bypass this limitation, we will work on 2 Google Colab notebooks simultaneously: 1 for your report and 1 for Quarto processing.
-
-&lt;img src="https://raw.githubusercontent.com/damien-dupre/img/main/quarto_colab.png" width="50%" /&gt;
+&lt;img src="https://raw.githubusercontent.com/damien-dupre/img/main/colab_terminal.png" width="60%" /&gt;
 
 ---
 
 # Using Quarto with Google Colab
 
-In addition your Quarto processing notebook needs access to your Google Drive.
-
-To grant this access, just run the following code or click `Mount Drive` to connect your Google Drive to your Google Colab
-
-```{.python}
-from google.colab import drive
-drive.mount("/content/drive")
-```
-
-Then you need to install quarto with a bash command:
+First, you need to install quarto from the terminal with a bash command:
 
 ```{.bash}
-!pip install quarto-cli
+pip install quarto-cli
+```
+
+Second, you need to grant access to Quarto to send the output to your Google Drive.
+
+To grant this access, just run the following code or click `Mount Drive` to connect your Google Drive to your Google Colab:
+
+```{.bash}
+python -c "from google.colab import drive; drive.mount('/content/drive')"
 ```
 
 ---
 
 # Using Quarto with Google Colab
 
-Once Quarto is installed, convert the `.ipynb` notebook to html with the following command: 
+Once Quarto is installed, convert the `.ipynb` notebook to html with the following command in the Terminal: 
 
 ```{.bash}
-!quarto render "/content/drive/MyDrive/Colab Notebooks/report.ipynb"
+quarto render "/content/drive/MyDrive/Colab Notebooks/report.ipynb"
 ```
 
-If you obtain the following output, then you need to run `!pip install quarto-cli` again:
+If you obtain the following output:
 
 ```
 line 1: quarto: command not found
 ```
+
+Then you need to run `pip install quarto-cli` again in the terminal!
 
 ---
 class: title-slide, middle
 
 ## 🛠️ Your Turn!
 
-1/ Create a FIRST notebook called `report.ipynb` and run the following code in the first cell:
+1/ Create a notebook called `report.ipynb` and run the following code in the first cell:
 
 ```{.python}
 print("Hello Quarto")
 ```
 
-2/ Create a SECOND notebook called `quarto.ipynb`
-
-- In the first code cell, install quarto by running:
+2/ From the Terminal, install Quarto:
 
 ```{.bash}
-!pip install quarto-cli
+pip install quarto-cli
 ```
 
-- In the second code cell, mount your drive by running:
-
-```{.python}
-from google.colab import drive
-drive.mount("/content/drive")
-```
-
-- In the third code cell, convert `report.ipynb` to HTML:
+3/ From the Terminal, grant access to you Google Drive:
 
 ```{.bash}
-!quarto render "/content/drive/MyDrive/Colab Notebooks/report.ipynb"
+python -c "from google.colab import drive; drive.mount('/content/drive')"
 ```
 
-<div class="countdown" id="timer_34379776" data-warn-when="60" data-update-every="1" tabindex="0" style="top:0;right:0;">
+4/ From the Terminal, convert your document to HTML:
+
+```{.bash}
+quarto render "/content/drive/MyDrive/Colab Notebooks/report.ipynb"
+```
+
+<div class="countdown" id="timer_19f309ad" data-warn-when="60" data-update-every="1" tabindex="0" style="top:0;right:0;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -220,15 +228,61 @@ drive.mount("/content/drive")
 
 # Converting ipynb to html
 
-Quarto, by default, creates an html webpage from an .ipynb notebook with the command `quarto render`.
+Quarto, by default, creates an html webpage from an `.ipynb` notebook with the command `quarto render`.
 
-Contrary to an .ipynb document which is a working document, an .html document is a final output which has a lot of possibilities such as displaying figures and texts, as well as dashboards too.
+Contrary to an `.ipynb` document which is a working document, an `.html` document is a final output which has a lot of possibilities such as displaying figures and texts, as well as dashboards too.
 
-The important thing to remember is that your code cells have to be already run before the .html is created to include their results in the html file.
+The important thing to remember is that your code cells have to be already run before the `.html` is created to include their results in the html file.
 
 If your code contains images and visualisations, then a supporting folder called `report_files` will also be created and will be necessary to display the html output of your report.
 
 However, we will see later a way to include this supporting folder inside the html output itself.
+
+---
+
+# Converting ipynb to html
+
+Once Quarto is installed from the terminal, and the access to your google drive is granted from the terminal, you can add as many cells as you want and re-render your document using again:
+
+```{.bash}
+quarto render "/content/drive/MyDrive/Colab Notebooks/report.ipynb"
+```
+
+In the terminal, you can reuse an already processed code by pressing the down arrow key ⬇️ 
+
+---
+class: title-slide, middle
+
+## 🛠️ Your Turn!
+
+1/ Add another code cell with the following code and run it to display the visualisation:
+
+```{.python}
+import polars as pl
+from plotnine import *
+
+(pl.DataFrame({
+    "Knowledge": ["Without Python", "With Python"],
+    "Power": [0.5, 99.5]
+    })
+&gt;&gt; ggplot(aes(x="Knowledge", y="Power"))
+    + geom_col()
+    + theme_minimal()
+)
+```
+
+2/ From the terminal, render the document again: 
+
+```{.bash}
+quarto render "/content/drive/MyDrive/Colab Notebooks/report.ipynb"
+```
+
+Note: use the down arrow key ⬇️ 
+
+<div class="countdown" id="timer_a30b55db" data-warn-when="60" data-update-every="1" tabindex="0" style="top:0;right:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
 
 ---
 class: inverse, mline, center, middle
@@ -239,7 +293,7 @@ class: inverse, mline, center, middle
 
 # Markdown Text in Python Notebooks
 
-So far, we only have seen code cells (mainly with python code but some with bash starting with `!`)
+So far, we only have seen code cells.
 
 A second option of Google Colab is to include text cells.
 
@@ -470,15 +524,15 @@ class: title-slide, middle
 
 &gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-2/ From the notebook `quarto.ipynb`, run again the cell containing the code:
+2/ From the Terminal, render your document again:
 
 ```{.bash}
-!quarto render "/content/drive/MyDrive/Colab Notebooks/report.ipynb"
+quarto render "/content/drive/MyDrive/Colab Notebooks/report.ipynb"
 ```
 
 3/ Download the html file `report.html` from Google Drive to your computer and open it.
 
-<div class="countdown" id="timer_f408cd97" data-warn-when="60" data-update-every="1" tabindex="0" style="top:0;right:0;">
+<div class="countdown" id="timer_107173ae" data-warn-when="60" data-update-every="1" tabindex="0" style="top:0;right:0;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -789,15 +843,15 @@ gapminder=pl.read_csv("https://raw.githubusercontent.com/damien-dupre/damien-dup
 ```
 ]
 
-2/ From the notebook `quarto.ipynb`, run again the cell containing the code:
+2/ From the Terminal, render the document again:
 
 ```{.bash}
-!quarto render "/content/drive/MyDrive/Colab Notebooks/report.ipynb"
+quarto render "/content/drive/MyDrive/Colab Notebooks/report.ipynb"
 ```
 
 3/ Download the html file `report.html` from Google Drive to your computer and open it.
 
-<div class="countdown" id="timer_495808db" data-warn-when="60" data-update-every="1" tabindex="0" style="top:0;right:0;">
+<div class="countdown" id="timer_4b04bb23" data-warn-when="60" data-update-every="1" tabindex="0" style="top:0;right:0;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -882,24 +936,6 @@ execute:
 - Does the plotnine code run without errors?
 - Did you run all cells before calling `quarto render`?
 ]
-
----
-class: title-slide, middle
-
-## 🛠️ Your Turn!
-
-Use an AI assistant (ChatGPT, Claude, or Copilot) to help you build a mini Quarto report. **Review all generated code before running it!**
-
-1/ Ask the AI: *"Write a Quarto YAML header for an HTML report about the gapminder dataset. Include a title, author, the flatly theme, code folding, and embedded resources."*
-
-2/ Ask the AI: *"Write a plotnine code cell for a Quarto report that creates a scatter plot of GDP per capita vs life expectancy for 2007, coloured by continent. Add a hashpipe option to set the figure caption to 'GDP vs Life Expectancy in 2007'."*
-
-3/ Paste the generated YAML and code into your `report.ipynb`, run all cells, then render with Quarto. Does the report look as expected?
-
-<div class="countdown" id="timer_288f0bb8" data-warn-when="60" data-update-every="1" tabindex="0" style="top:0;right:0;">
-<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
-</div>
 
 ---
 
