@@ -166,10 +166,11 @@ pip install quarto-cli
 
 Second, you need to grant access to Quarto to send the output to your Google Drive.
 
-To grant this access, just run the following code or click `Mount Drive` to connect your Google Drive to your Google Colab:
+To grant this access, just run the following code in the notebook or click `Mount Drive` to connect your Google Drive to your Google Colab:
 
-```{.bash}
-python -c "from google.colab import drive; drive.mount('/content/drive')"
+```{.python}
+from google.colab import drive
+drive.mount("/content/drive")
 ```
 
 ---
@@ -198,19 +199,20 @@ class: title-slide, middle
 1/ Create a notebook called `report.ipynb` and run the following code in the first cell:
 
 ```{.python}
+from google.colab import drive
+drive.mount("/content/drive")
+```
+
+2/ add a second code cell:
+
+```{.python}
 print("Hello Quarto")
 ```
 
-2/ From the Terminal, install Quarto:
+3/ From the Terminal, install Quarto:
 
 ```{.bash}
 pip install quarto-cli
-```
-
-3/ From the Terminal, grant access to you Google Drive:
-
-```{.bash}
-python -c "from google.colab import drive; drive.mount('/content/drive')"
 ```
 
 4/ From the Terminal, convert your document to HTML:
@@ -219,7 +221,7 @@ python -c "from google.colab import drive; drive.mount('/content/drive')"
 quarto render "/content/drive/MyDrive/Colab Notebooks/report.ipynb"
 ```
 
-<div class="countdown" id="timer_19f309ad" data-warn-when="60" data-update-every="1" tabindex="0" style="top:0;right:0;">
+<div class="countdown" id="timer_e3521927" data-warn-when="60" data-update-every="1" tabindex="0" style="top:0;right:0;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -279,7 +281,7 @@ quarto render "/content/drive/MyDrive/Colab Notebooks/report.ipynb"
 
 Note: use the down arrow key ⬇️ 
 
-<div class="countdown" id="timer_a30b55db" data-warn-when="60" data-update-every="1" tabindex="0" style="top:0;right:0;">
+<div class="countdown" id="timer_685613c5" data-warn-when="60" data-update-every="1" tabindex="0" style="top:0;right:0;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -532,7 +534,7 @@ quarto render "/content/drive/MyDrive/Colab Notebooks/report.ipynb"
 
 3/ Download the html file `report.html` from Google Drive to your computer and open it.
 
-<div class="countdown" id="timer_107173ae" data-warn-when="60" data-update-every="1" tabindex="0" style="top:0;right:0;">
+<div class="countdown" id="timer_171bd27f" data-warn-when="60" data-update-every="1" tabindex="0" style="top:0;right:0;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -851,7 +853,7 @@ quarto render "/content/drive/MyDrive/Colab Notebooks/report.ipynb"
 
 3/ Download the html file `report.html` from Google Drive to your computer and open it.
 
-<div class="countdown" id="timer_4b04bb23" data-warn-when="60" data-update-every="1" tabindex="0" style="top:0;right:0;">
+<div class="countdown" id="timer_1fa55d06" data-warn-when="60" data-update-every="1" tabindex="0" style="top:0;right:0;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
