@@ -14,7 +14,7 @@ output:
       
 params:
   module_code: "BAA1030"
-  assignment_2_deadline: "April 13th, 1pm"
+  assignment_2_deadline: "April 7th, 1pm"
 ---
 
 ```{r child = '/Users/damienhome/Drive/Projects/lectures/python/github.Rmd'}
